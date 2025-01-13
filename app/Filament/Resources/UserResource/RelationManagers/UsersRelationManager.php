@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Filament\Resources\UserResource\RelationManagers;
+
+use App\Enums\Role;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Forms\Set;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+
+class UsersRelationManager extends RelationManager
+{
+    protected static string $relationship = 'users';
+    protected static ?string $icon = 'heroicon-m-users';
+
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                TextInput::make('name')
+                    ->required(),
+                TextInput::make('email')
+                    ->required()
+                    ->email()
+                    ->unique(ignoreRecord: true),
+                TextInput::make('password')
+                    ->required()
+                    ->password()
+                    ->revealable()
+                    ->suffixAction(
+                        Action::make('generateRandomPassword')
+                            ->icon('heroicon-m-key')
+                            ->action(function (Set $set, $state) {
+                                $set('password', Str::random(10));
+                            })
+                    )
+                    ->visibleOn('create'),
+                Select::make('role')
+                    ->options(
+                        Role::getClientRoleOptions(auth()->user()->role),
+                    )
+                    ->searchable()
+                    ->required()
+                    ->live(),
+            ]);
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('name')
+            ->columns([
+                TextColumn::make('name'),
+                TextColumn::make('email'),
+                TextColumn::make('role')
+                    ->formatStateUsing(fn (Role $state): string => $state->getLabel()),
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                CreateAction::make(),
+            ])
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(),
+            ])
+            ->bulkActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
+            ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->teamFilterRoles());
+    }
+}

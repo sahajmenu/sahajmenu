@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Enums\Role;
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,12 +12,17 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        // create super admin
+        User::factory()->asSuperAdmin()->createQuietly([
+            'name' => 'Super Admin',
+            'email' => 'super@example.com',
+            'password' => bcrypt('password'),
+        ]);
+        // create admin
+        User::factory()->asAdmin()->createQuietly([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
-            'team_id' => Team::first(),
-            'role' => Role::ADMINISTRATOR,
         ]);
     }
 }

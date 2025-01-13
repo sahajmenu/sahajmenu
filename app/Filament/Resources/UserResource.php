@@ -3,17 +3,27 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Role;
-use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
-use Filament\Forms;
+use App\Traits\AdminAccess;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
+    use AdminAccess;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
@@ -22,33 +32,21 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->required()
-                    ->email()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->revealable()
-                    ->visibleOn('create'),
-                Forms\Components\Select::make('role')
-                    ->options(
-                        Role::getRoleOptions(auth()->user()->role),
-                    )
-                    ->searchable()
-                    ->required(),
-                Forms\Components\Select::make('team_id')
-                    ->relationship('team', 'name')
-                    ->searchable()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')->required(),
-                        Forms\Components\TextInput::make('domain'),
-                        Forms\Components\TextInput::make('slug'),
+                Section::make()
+                    ->schema([
+                        TextInput::make('name')
+                            ->required(),
+                        TextInput::make('email')
+                            ->required()
+                            ->email()
+                            ->unique(ignoreRecord: true),
+                        TextInput::make('password')
+                            ->required()
+                            ->password()
+                            ->revealable()
+                            ->visibleOn('create'),
                     ])
-                    ->createOptionModalHeading('Create Team')
-                    ->required()
-                    ->preload(),
+                    ->columns(2),
             ]);
     }
 
@@ -56,20 +54,23 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('team.name'),
-                Tables\Columns\TextColumn::make('role')
+                TextColumn::make('name'),
+                TextColumn::make('email'),
+                TextColumn::make('role')
                     ->formatStateUsing(fn (Role $state): string => $state->getLabel()),
+                TextColumn::make('client.name')
+                    ->default('Vendor'),
             ])
             ->filters([
-                //
+                SelectFilter::make('role')
+                    ->options(Role::getUserRoleOptions(auth()->user()->role)),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -77,21 +78,31 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
+            'index' => ListUsers::route('/'),
+            'create' => CreateUser::route('/create'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->teamFilterRoles();
+    }
+
+    public static function canAccess(): bool
+    {
+        return self::hasAdminAccess();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()->isSuperAdmin();
     }
 }

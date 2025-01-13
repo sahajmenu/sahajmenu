@@ -2,9 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\ClientResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -16,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -25,7 +28,8 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('app')
+            ->domain(config('app.short_url'))
             ->login()
             ->colors([
                 'primary' => Color::Amber,
@@ -53,6 +57,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->navigationItems([
+                NavigationItem::make('My Profile')
+                    ->url(fn (): string => ClientResource::getUrl('edit', ['record' => Auth::user()?->client]))
+                    ->visible(fn (): bool => Auth::user()->clientAccess())
+                    ->icon('heroicon-o-user')
+                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
+            ])
+            ->spa();
     }
 }
