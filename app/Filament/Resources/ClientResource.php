@@ -40,8 +40,10 @@ class ClientResource extends Resource
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
                             ->lazy()
                             ->required(),
-                        TextInput::make('subdomain')->unique(ignoreRecord: true),
-                        TextInput::make('slug')->unique(ignoreRecord: true),
+                        TextInput::make('subdomain')->required()->unique(ignoreRecord: true),
+                        TextInput::make('slug')->required()->unique(ignoreRecord: true),
+                        TextInput::make('address')->string(),
+                        TextInput::make('phone')->numeric(),
                     ])->columns(2),
             ]);
     }
