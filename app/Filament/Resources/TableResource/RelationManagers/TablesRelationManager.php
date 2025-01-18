@@ -67,7 +67,7 @@ class TablesRelationManager extends RelationManager
                                             ->view('filament.infolists.entries.qr'),
                                     ])
                                     ->icon('heroicon-m-qr-code')
-                                    ->grow('false'),
+                                    ->grow(false),
                             ])->from('md'),
                         ]),
                 ]),
