@@ -4,10 +4,13 @@ namespace App\Filament\Resources\TableResource\RelationManagers;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
@@ -46,20 +49,29 @@ class TablesRelationManager extends RelationManager
                 CreateAction::make(),
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-                ViewAction::make()
+                ActionGroup::make([
+                    EditAction::make(),
+                    DeleteAction::make(),
+                    ViewAction::make()
                     ->infolist([
-                        Section::make('Table Information')
-                            ->schema([
-                                TextEntry::make('name'),
-                            ]),
-                        Section::make('QR Code')
-                            ->schema([
-                                ViewEntry::make('QR')
-                                    ->view('filament.infolists.entries.qr'),
-                            ]),
-                    ]),
+                        Split::make([
+                            Section::make('Table Information')
+                                ->schema([
+                                    TextEntry::make('name'),
+                                    TextEntry::make('client.name')
+                                        ->label('Restaurant')
+                                ])
+                                ->icon('heroicon-o-information-circle'),
+                            Section::make('QR Code')
+                                ->schema([
+                                    ViewEntry::make('QR')
+                                        ->view('filament.infolists.entries.qr'),
+                                ])
+                                ->icon('heroicon-m-qr-code')
+                                ->grow('false')
+                        ])->from('md')
+                    ])
+                ])
             ])
             ->bulkActions([
                 BulkActionGroup::make([
