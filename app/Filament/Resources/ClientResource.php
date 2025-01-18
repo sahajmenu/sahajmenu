@@ -28,13 +28,14 @@ class ClientResource extends Resource
 
     protected static ?string $model = Client::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make('Client Information')
+                    ->description("You can update or edit the details here.")
                     ->schema([
                         TextInput::make('name')
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
