@@ -77,7 +77,7 @@ class UsersRelationManager extends RelationManager
                 ActionGroup::make([
                     EditAction::make(),
                     DeleteAction::make(),
-                ])
+                ]),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

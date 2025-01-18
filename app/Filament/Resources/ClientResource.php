@@ -35,7 +35,7 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Section::make('Client Information')
-                    ->description("You can update or edit the details here.")
+                    ->description('You can update or edit the details here.')
                     ->schema([
                         TextInput::make('name')
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
