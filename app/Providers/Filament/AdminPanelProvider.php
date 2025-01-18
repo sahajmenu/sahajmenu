@@ -32,8 +32,9 @@ class AdminPanelProvider extends PanelProvider
             ->domain(config('app.short_url'))
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Fuchsia,
             ])
+            ->font('Montserrat')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -65,6 +66,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-user')
                     ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
             ])
-            ->spa();
+            ->spa()
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
