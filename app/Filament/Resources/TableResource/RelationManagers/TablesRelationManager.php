@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\TableResource\RelationManagers;
 
 use App\Services\TableService;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Section;
@@ -58,23 +59,28 @@ class TablesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->slideOver(),
                 Action::make('Bulk Create')
                     ->color(Color::Green)
                     ->form([
-                        TextInput::make('total')
-                            ->integer()
-                            ->minValue(1)
-                            ->rules(['gt:0'])
-                            ->prefix('Table'),
+                        Grid::make()
+                        ->schema([
+                            TextInput::make('total')
+                                ->required()
+                                ->integer()
+                                ->minValue(1)
+                                ->rules(['gt:0'])
+                                ->prefix('Table'),
+                        ])
                     ])->action(function (array $data): void {
                         resolve(TableService::class)
                             ->importBulkTable($data['total'], $this->ownerRecord);
                         Notification::make()
-                            ->title('Bulk Table Imported')
+                            ->title('Bulk Table Created')
                             ->success()
                             ->send();
-                    }),
+                    })->slideOver()
             ])
             ->actions([
                     ActionGroup::make([
@@ -94,6 +100,7 @@ class TablesRelationManager extends RelationManager
                                                 ->copyable()
                                                 ->copyMessage('Copied!')
                                                 ->copyMessageDuration(1500)
+                                                ->icon('heroicon-m-link')
                                         ])
                                         ->icon('heroicon-o-information-circle'),
                                     Section::make('QR Code')

@@ -60,10 +60,10 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->navigationItems([
-                NavigationItem::make('My Profile')
+                NavigationItem::make('Profile')
                     ->url(fn (): string => ClientResource::getUrl('edit', ['record' => Auth::user()?->client]))
                     ->visible(fn (): bool => Auth::user()->clientAccess())
-                    ->icon('heroicon-o-user')
+                    ->icon('heroicon-o-home-modern')
                     ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
             ])
             ->spa()
