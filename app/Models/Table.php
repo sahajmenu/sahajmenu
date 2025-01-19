@@ -25,6 +25,6 @@ class Table extends Model
     {
         $subdomain = $this->client->subdomain;
 
-        return sprintf('%s://%s.%s', config('app.schema'), $subdomain, config('app.short_url'));
+        return sprintf('%s://%s.%s?table_id=%s', config('app.schema'), $subdomain, config('app.short_url'),$this->id);
     }
 }

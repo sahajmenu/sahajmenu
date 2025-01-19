@@ -5,6 +5,6 @@
             <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(150)->margin(1)->generate($getRecord()->table_link)) !!} " alt="table-link">
         </div>
     </div>
-    <h1 class="font-black flex justify-center">{{ $getRecord()->name }}</h1>
+    <h1 class="font-black flex justify-center">Table {{ $getRecord()->number }}</h1>
 </div>
 

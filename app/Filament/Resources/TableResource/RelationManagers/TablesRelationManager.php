@@ -68,7 +68,8 @@ class TablesRelationManager extends RelationManager
                             ->rules(['gt:0'])
                             ->prefix('Table'),
                     ])->action(function (array $data): void {
-                        resolve(TableService::class)->importBulkTable($data['total'], $this->ownerRecord);
+                        resolve(TableService::class)
+                            ->importBulkTable($data['total'], $this->ownerRecord);
                         Notification::make()
                             ->title('Bulk Table Imported')
                             ->success()
@@ -88,6 +89,11 @@ class TablesRelationManager extends RelationManager
                                             TextEntry::make('number'),
                                             TextEntry::make('client.name')
                                                 ->label('Restaurant'),
+                                            TextEntry::make('table_link')
+                                                ->label('Table Link')
+                                                ->copyable()
+                                                ->copyMessage('Copied!')
+                                                ->copyMessageDuration(1500)
                                         ])
                                         ->icon('heroicon-o-information-circle'),
                                     Section::make('QR Code')
