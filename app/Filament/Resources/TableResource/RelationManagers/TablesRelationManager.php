@@ -59,8 +59,7 @@ class TablesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make()
-                    ->slideOver(),
+                CreateAction::make(),
                 Action::make('Bulk Create')
                     ->color(Color::Green)
                     ->form([
@@ -80,7 +79,7 @@ class TablesRelationManager extends RelationManager
                             ->title('Bulk Table Created')
                             ->success()
                             ->send();
-                    })->slideOver()
+                    })
             ])
             ->actions([
                     ActionGroup::make([
