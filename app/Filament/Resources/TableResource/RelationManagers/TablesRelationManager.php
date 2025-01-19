@@ -2,13 +2,17 @@
 
 namespace App\Filament\Resources\TableResource\RelationManagers;
 
+use App\Services\TableService;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\Split;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
@@ -55,37 +59,52 @@ class TablesRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
+                Action::make('Bulk Create')
+                    ->color(Color::Green)
+                    ->form([
+                        TextInput::make('total')
+                            ->integer()
+                            ->minValue(1)
+                            ->rules(['gt:0'])
+                            ->prefix('Table'),
+                    ])->action(function (array $data): void {
+                        resolve(TableService::class)->importBulkTable($data['total'], $this->ownerRecord);
+                        Notification::make()
+                            ->title('Bulk Table Imported')
+                            ->success()
+                            ->send();
+                    }),
             ])
             ->actions([
-                ActionGroup::make([
-                    EditAction::make()
-                        ->slideOver(),
-                    DeleteAction::make(),
-                    ViewAction::make()
-                        ->infolist([
-                            Split::make([
-                                Section::make('Table Information')
-                                    ->schema([
-                                        TextEntry::make('number'),
-                                        TextEntry::make('client.name')
-                                            ->label('Restaurant'),
-                                    ])
-                                    ->icon('heroicon-o-information-circle'),
-                                Section::make('QR Code')
-                                    ->schema([
-                                        ViewEntry::make('QR')
-                                            ->view('filament.infolists.entries.qr'),
-                                    ])
-                                    ->icon('heroicon-m-qr-code')
-                                    ->grow(false),
-                            ])->from('md'),
-                        ])->slideOver(),
-                ]),
+                    ActionGroup::make([
+                        EditAction::make()
+                            ->slideOver(),
+                        DeleteAction::make(),
+                        ViewAction::make()
+                            ->infolist([
+                                Split::make([
+                                    Section::make('Table Information')
+                                        ->schema([
+                                            TextEntry::make('number'),
+                                            TextEntry::make('client.name')
+                                                ->label('Restaurant'),
+                                        ])
+                                        ->icon('heroicon-o-information-circle'),
+                                    Section::make('QR Code')
+                                        ->schema([
+                                            ViewEntry::make('QR')
+                                                ->view('filament.infolists.entries.qr'),
+                                        ])
+                                        ->icon('heroicon-m-qr-code')
+                                        ->grow(false),
+                                ])->from('md'),
+                            ])->slideOver(),
+                    ]),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                    BulkActionGroup::make([
+                        DeleteBulkAction::make(),
+                    ]),
             ])->defaultSort('number');
     }
 }
