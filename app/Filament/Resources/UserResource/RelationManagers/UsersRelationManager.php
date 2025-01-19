@@ -75,7 +75,8 @@ class UsersRelationManager extends RelationManager
             ])
             ->actions([
                 ActionGroup::make([
-                    EditAction::make(),
+                    EditAction::make()
+                        ->slideOver(),
                     DeleteAction::make(),
                 ]),
             ])

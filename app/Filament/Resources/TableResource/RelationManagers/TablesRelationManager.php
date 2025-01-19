@@ -49,7 +49,8 @@ class TablesRelationManager extends RelationManager
             ])
             ->actions([
                 ActionGroup::make([
-                    EditAction::make(),
+                    EditAction::make()
+                        ->slideOver(),
                     DeleteAction::make(),
                     ViewAction::make()
                         ->infolist([
@@ -69,7 +70,7 @@ class TablesRelationManager extends RelationManager
                                     ->icon('heroicon-m-qr-code')
                                     ->grow(false),
                             ])->from('md'),
-                        ]),
+                        ])->slideOver(),
                 ]),
             ])
             ->bulkActions([
