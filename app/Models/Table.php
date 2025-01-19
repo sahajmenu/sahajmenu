@@ -12,7 +12,7 @@ class Table extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'number',
         'client_id',
     ];
 

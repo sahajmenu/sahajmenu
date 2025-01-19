@@ -18,6 +18,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 
 class TablesRelationManager extends RelationManager
 {
@@ -28,18 +29,26 @@ class TablesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('number')
                     ->required()
-                    ->maxLength(255),
+                    ->integer()
+                    ->minValue(1)
+                    ->rules(['gt:0'])
+                    ->prefix('Table')
+                    ->autofocus(false)
+                    ->unique(table: 'tables', column: 'number', ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
+                        return $rule->where('client_id', $this->ownerRecord->id);
+                    }),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
+            ->recordTitleAttribute('number')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('number')
+                    ->prefix('Table '),
             ])
             ->filters([
                 //
@@ -57,7 +66,7 @@ class TablesRelationManager extends RelationManager
                             Split::make([
                                 Section::make('Table Information')
                                     ->schema([
-                                        TextEntry::make('name'),
+                                        TextEntry::make('number'),
                                         TextEntry::make('client.name')
                                             ->label('Restaurant'),
                                     ])
@@ -77,6 +86,6 @@ class TablesRelationManager extends RelationManager
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('number');
     }
 }

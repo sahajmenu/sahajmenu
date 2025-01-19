@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('number');
             $table->foreignIdFor(Client::class);
             $table->timestamps();
         });

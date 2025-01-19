@@ -12,7 +12,11 @@ class TablePolicy
      */
     public function before(User $user, string $ability): ?bool
     {
-        return true;
+        if ($user->adminAccess()) {
+            return true;
+        }
+
+        return null;
     }
 
     /**
@@ -20,7 +24,7 @@ class TablePolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +32,7 @@ class TablePolicy
      */
     public function view(User $user, Table $table): bool
     {
-        return false;
+        return $this->tableBelongsToClient($user, $table);
     }
 
     /**
@@ -36,7 +40,7 @@ class TablePolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -68,6 +72,16 @@ class TablePolicy
      */
     public function forceDelete(User $user, Table $table): bool
     {
+        return false;
+    }
+
+    private function tableBelongsToClient(User $user, Table $table): bool
+    {
+        if ($user->clientAccess() &&
+            $user->client_id === $table->client_id) {
+            return true;
+        }
+
         return false;
     }
 }
