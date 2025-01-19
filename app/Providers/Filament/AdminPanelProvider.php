@@ -66,7 +66,6 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-home-modern')
                     ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
             ])
-            ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
