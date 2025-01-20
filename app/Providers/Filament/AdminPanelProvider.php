@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -66,6 +67,10 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-home-modern')
                     ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css');
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->brandLogo(function():string|null{
+                $client = auth()->user()?->client;
+                return $client ? Storage::disk('logos')->url($client->logo) : null;
+            });
     }
 }
