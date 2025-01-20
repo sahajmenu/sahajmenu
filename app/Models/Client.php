@@ -19,6 +19,7 @@ class Client extends Model
         'phone',
         'subdomain',
         'slug',
+        'logo',
     ];
 
     public function users(): HasMany

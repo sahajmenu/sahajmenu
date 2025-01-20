@@ -9,6 +9,7 @@ use App\Filament\Resources\TableResource\RelationManagers\TablesRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
 use App\Models\Client;
 use App\Traits\AdminAccess;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -35,6 +36,7 @@ class ClientResource extends Resource
         return $form
             ->schema([
                 Section::make('Client Information')
+                    ->icon('heroicon-m-information-circle')
                     ->description('You can update or edit the details here.')
                     ->schema([
                         TextInput::make('name')
@@ -46,7 +48,15 @@ class ClientResource extends Resource
                         TextInput::make('address')->string(),
                         TextInput::make('phone')->numeric(),
                     ])->columns(2),
-            ]);
+
+                Section::make('Client Logo')
+                    ->icon('heroicon-m-photo')
+                    ->schema([
+                        FileUpload::make('logo')
+                            ->disk('logos')
+                            ->columnSpanFull(),
+                    ]),
+            ])->columns(2);
     }
 
     public static function table(Table $table): Table
