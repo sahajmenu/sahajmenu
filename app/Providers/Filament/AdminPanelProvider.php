@@ -68,8 +68,9 @@ class AdminPanelProvider extends PanelProvider
                     ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->brandLogo(function():string|null{
+            ->brandLogo(function (): ?string {
                 $client = auth()->user()?->client;
+
                 return $client ? Storage::disk('logos')->url($client->logo) : null;
             });
     }

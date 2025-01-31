@@ -5,26 +5,23 @@ namespace App\Services;
 use App\Models\Client;
 use App\Models\Table;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TableServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @test
-     */
-    public function bulk_table_if_maxis_null(): void
+    #[Test]
+    public function bulkTableIfMaxIsNull(): void
     {
         $client = Client::factory()->createQuietly();
         resolve(TableService::class)->importBulkTable(5, $client);
         $this->assertEquals(5, $client->tables->count());
     }
 
-    /**
-     * @test
-     */
-    public function bulk_table_if_max_is_not_null(): void
+    #[Test]
+    public function bulkTableIfMaxisNotNull(): void
     {
         $client = Client::factory()->createQuietly();
         for ($i = 1; $i <= 3; $i++) {

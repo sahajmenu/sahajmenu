@@ -64,14 +64,14 @@ class TablesRelationManager extends RelationManager
                     ->color(Color::Green)
                     ->form([
                         Grid::make()
-                        ->schema([
-                            TextInput::make('total')
-                                ->required()
-                                ->integer()
-                                ->minValue(1)
-                                ->rules(['gt:0'])
-                                ->prefix('Table'),
-                        ])
+                            ->schema([
+                                TextInput::make('total')
+                                    ->required()
+                                    ->integer()
+                                    ->minValue(1)
+                                    ->rules(['gt:0'])
+                                    ->prefix('Table'),
+                            ]),
                     ])->action(function (array $data): void {
                         resolve(TableService::class)
                             ->importBulkTable($data['total'], $this->ownerRecord);
@@ -79,44 +79,44 @@ class TablesRelationManager extends RelationManager
                             ->title('Bulk Table Created')
                             ->success()
                             ->send();
-                    })
+                    }),
             ])
             ->actions([
-                    ActionGroup::make([
-                        EditAction::make()
-                            ->slideOver(),
-                        DeleteAction::make(),
-                        ViewAction::make()
-                            ->infolist([
-                                Split::make([
-                                    Section::make('Table Information')
-                                        ->schema([
-                                            TextEntry::make('number'),
-                                            TextEntry::make('client.name')
-                                                ->label('Restaurant'),
-                                            TextEntry::make('table_link')
-                                                ->label('Table Link')
-                                                ->copyable()
-                                                ->copyMessage('Copied!')
-                                                ->copyMessageDuration(1500)
-                                                ->icon('heroicon-m-link')
-                                        ])
-                                        ->icon('heroicon-o-information-circle'),
-                                    Section::make('QR Code')
-                                        ->schema([
-                                            ViewEntry::make('QR')
-                                                ->view('filament.infolists.entries.qr'),
-                                        ])
-                                        ->icon('heroicon-m-qr-code')
-                                        ->grow(false),
-                                ])->from('md'),
-                            ])->slideOver(),
-                    ]),
+                ActionGroup::make([
+                    EditAction::make()
+                        ->slideOver(),
+                    DeleteAction::make(),
+                    ViewAction::make()
+                        ->infolist([
+                            Split::make([
+                                Section::make('Table Information')
+                                    ->schema([
+                                        TextEntry::make('number'),
+                                        TextEntry::make('client.name')
+                                            ->label('Restaurant'),
+                                        TextEntry::make('table_link')
+                                            ->label('Table Link')
+                                            ->copyable()
+                                            ->copyMessage('Copied!')
+                                            ->copyMessageDuration(1500)
+                                            ->icon('heroicon-m-link'),
+                                    ])
+                                    ->icon('heroicon-o-information-circle'),
+                                Section::make('QR Code')
+                                    ->schema([
+                                        ViewEntry::make('QR')
+                                            ->view('filament.infolists.entries.qr'),
+                                    ])
+                                    ->icon('heroicon-m-qr-code')
+                                    ->grow(false),
+                            ])->from('md'),
+                        ])->slideOver(),
+                ]),
             ])
             ->bulkActions([
-                    BulkActionGroup::make([
-                        DeleteBulkAction::make(),
-                    ]),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ])->defaultSort('number');
     }
 }
