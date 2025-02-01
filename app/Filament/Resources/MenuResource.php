@@ -5,12 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MenuResource\Pages;
 use App\Filament\Resources\MenuResource\Pages\CreateMenu;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Menu;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -61,6 +63,12 @@ class MenuResource extends Resource
                     ->hidden(auth()->user()->clientAccess()),
                 FileUpload::make('images')
                     ->multiple()
+                    ->directory(function (Get $get) {
+                        $client = $get('client_id') ? Client::firstWhere('id', $get('client_id'))
+                            : auth()->user()->client;
+
+                        return "{$client->id}-{$client->subdomain}";
+                    })
                     ->image()
                     ->panelLayout('grid')
                     ->reorderable()
