@@ -17,6 +17,7 @@ class ClientSeeder extends Seeder
             ->withUser(Role::OWNER)
             ->withUser(Role::MANAGER)
             ->withUser(Role::FRONT_DESK)
+            ->withMenuImageFolder()
             ->createQuietly([
                 'name' => 'Sherpa Cafe',
                 'address' => 'Boudha',
@@ -29,6 +30,7 @@ class ClientSeeder extends Seeder
             ->withUser(Role::OWNER)
             ->withUser(Role::MANAGER)
             ->withUser(Role::FRONT_DESK)
+            ->withMenuImageFolder()
             ->createQuietly([
                 'name' => 'Lama Cafe',
                 'address' => 'Tinchuli',
