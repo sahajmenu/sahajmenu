@@ -32,6 +32,11 @@ class Client extends Model
         return $this->hasMany(Table::class);
     }
 
+    public function menus(): HasMany
+    {
+        return $this->hasMany(Menu::class);
+    }
+
     public function scopeGetOwnClient(Builder $query): void
     {
         $user = Auth::user();
