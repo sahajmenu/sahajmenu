@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->integer('number');
-            $table->foreignIdFor(Client::class);
+            $table->foreignIdFor(Client::class)->constrained();
             $table->timestamps();
         });
     }
