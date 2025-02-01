@@ -20,7 +20,6 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class ClientResource extends Resource
@@ -94,11 +93,6 @@ class ClientResource extends Resource
             'create' => CreateClient::route('/create'),
             'edit' => EditClient::route('/{record}/edit'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->getOwnClient();
     }
 
     public static function shouldRegisterNavigation(): bool
