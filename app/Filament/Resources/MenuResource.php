@@ -3,16 +3,18 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MenuResource\Pages;
-use App\Filament\Resources\MenuResource\RelationManagers;
+use App\Filament\Resources\MenuResource\Pages\CreateMenu;
+use App\Models\Category;
 use App\Models\Menu;
-use Filament\Forms;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MenuResource extends Resource
 {
@@ -24,9 +26,46 @@ class MenuResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name'),
+                TextInput::make('name')
+                    ->required()
+                    ->string(),
                 TextInput::make('price')
-                    ->numeric()
+                    ->required()
+                    ->numeric(),
+                SelectTree::make('category_id')
+                    ->label('Category')
+                    ->withCount()
+                    ->searchable()
+                    ->relationship('category', 'name', 'parent_id')
+                    ->enableBranchNode()
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required(),
+                        SelectTree::make('parent_id')
+                            ->label('Parent Category')
+                            ->withCount()
+                            ->searchable()
+                            ->relationship('parent', 'name', 'parent_id')
+                            ->enableBranchNode(),
+                    ])
+                    ->createOptionUsing(function (array $data): int {
+                        $data = resolve(CreateMenu::class)->injectClientIdBeforeCreate($data);
+
+                        return Category::create($data)->getKey();
+                    })->required(),
+                Select::make('client_id')
+                    ->relationship('client', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->hidden(auth()->user()->clientAccess()),
+                FileUpload::make('images')
+                    ->multiple()
+                    ->image()
+                    ->panelLayout('grid')
+                    ->reorderable()
+                    ->disk('menus')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -34,7 +73,10 @@ class MenuResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name'),
+                TextColumn::make('price'),
+                TextColumn::make('category.name'),
+                TextColumn::make('client.name'),
             ])
             ->filters([
                 //

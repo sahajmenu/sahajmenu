@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Enums\Role;
+use App\Filament\Resources\MenuResource\Pages\CreateMenu;
+use App\Models\Category;
+use App\Models\Client;
+use App\Models\Menu;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class MenuResourceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * It runs as we inject client id in CreateMenu.
+     */
+    #[Test]
+    public function clientCanCreateMenuWithoutPassingClientId(): void
+    {
+        $user = User::factory()->withClient(Role::OWNER)->createQuietly();
+        $category = Category::factory()->createQuietly([
+            'client_id' => $user->client->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $data = [
+            'name' => 'Chicken Momo',
+            'price' => 22,
+            'category_id' => $category->id,
+            'images' => ['image.jpeg'],
+        ];
+
+        Livewire::test(CreateMenu::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas(Menu::class, [
+            'name' => $data['name'],
+            'price' => $data['price'],
+            'category_id' => $category->id,
+            'client_id' => $user->client->id,
+        ]);
+
+    }
+
+    #[Test]
+    public function adminNeedsToPassClientId(): void
+    {
+        $user = User::factory()->asAdmin()->createQuietly();
+        $client = Client::factory()->createQuietly();
+        $category = Category::factory()->createQuietly([
+            'client_id' => $client->id,
+        ]);
+
+        $this->actingAs($user);
+
+        $data = [
+            'name' => 'Chicken Momo',
+            'price' => 22,
+            'category_id' => $category->id,
+            'client_id' => $client->id,
+            'images' => ['image.jpeg'],
+        ];
+
+        Livewire::test(CreateMenu::class)
+            ->fillForm($data)
+            ->call('create')
+            ->assertHasNoFormErrors();
+
+        $this->assertDatabaseHas(Menu::class, [
+            'name' => $data['name'],
+            'price' => $data['price'],
+            'category_id' => $category->id,
+            'client_id' => $client->id,
+        ]);
+    }
+}
