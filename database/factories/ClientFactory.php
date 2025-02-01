@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -38,6 +39,14 @@ class ClientFactory extends Factory
                 'client_id' => $client->id,
                 'role' => $role,
             ]);
+        });
+    }
+
+    public function withMenuImageFolder(): static
+    {
+        return $this->afterCreating(function (Client $client) {
+            Storage::disk('menus')
+                ->makeDirectory("{$client->id}-{$client->subdomain}");
         });
     }
 }

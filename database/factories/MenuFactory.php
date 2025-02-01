@@ -26,14 +26,14 @@ class MenuFactory extends Factory
         ];
     }
 
-    public function withCategory(Category $category): Factory
+    public function withCategory(Category $category): static
     {
         return $this->state(function (array $attributes) use ($category) {
             ['category_id' => $category->id];
         });
     }
 
-    public function withClient(Client $client): Factory
+    public function withClient(Client $client): static
     {
         return $this->state(function (array $attributes) use ($client) {
             ['client_id' => $client->id];

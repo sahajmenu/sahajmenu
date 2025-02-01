@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
         ];
     }
 
-    public function withChild(): Factory
+    public function withChild(): static
     {
         return $this->afterCreating(function (Category $category) {
             Category::factory()->createQuietly([
