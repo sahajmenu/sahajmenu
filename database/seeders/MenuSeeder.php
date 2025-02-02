@@ -14,7 +14,7 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Client::get()->each(function ($client) {
-            Menu::factory()->count(5)->withClient($client)->createQuietly();
+            Menu::factory()->count(5)->withClient($client)->withCategory()->createQuietly();
         });
     }
 }

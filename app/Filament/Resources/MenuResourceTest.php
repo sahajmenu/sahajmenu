@@ -102,9 +102,9 @@ class MenuResourceTest extends TestCase
     public function clientCanEditTheirMenuOnly(): void
     {
         $user = User::factory()->withClient(Role::OWNER)->createQuietly();
-        $menu = Menu::factory()->withClient($user->client)->createQuietly();
+        $menu = Menu::factory()->withClient($user->client)->withCategory()->createQuietly();
 
-        $secondMenu = Menu::factory()->createQuietly();
+        $secondMenu = Menu::factory()->withClient()->withCategory()->createQuietly();
 
         Livewire::actingAs($user)
             ->test(EditMenu::class, ['record' => $menu->id])
@@ -122,9 +122,9 @@ class MenuResourceTest extends TestCase
     public function adminCanEditAllMenu(): void
     {
         $user = User::factory()->asAdmin()->createQuietly();
-        $menu = Menu::factory()->createQuietly();
+        $menu = Menu::factory()->withClient()->withCategory()->createQuietly();
 
-        $secondMenu = Menu::factory()->createQuietly();
+        $secondMenu = Menu::factory()->withClient()->withCategory()->createQuietly();
 
         Livewire::actingAs($user)
             ->test(EditMenu::class, ['record' => $menu->id])
