@@ -21,22 +21,22 @@ class MenuFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'price' => $this->faker->randomFloat(2, 10, 100),
-            'category_id' => Category::all()->random()->id,
-            'client_id' => Client::all()->random()->id,
+            'category_id' => Category::factory()->createQuietly(),
+            'client_id' => Client::factory()->createQuietly(),
         ];
     }
 
     public function withCategory(Category $category): static
     {
         return $this->state(function (array $attributes) use ($category) {
-            ['category_id' => $category->id];
+            return ['category_id' => $category->id];
         });
     }
 
     public function withClient(Client $client): static
     {
         return $this->state(function (array $attributes) use ($client) {
-            ['client_id' => $client->id];
+            return ['client_id' => $client->id];
         });
     }
 }

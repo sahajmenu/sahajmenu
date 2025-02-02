@@ -70,7 +70,8 @@ class AdminPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandLogo(function (): ?string {
                 $client = auth()->user()?->client;
-                return $client && Storage::disk('logos')->exists($client->logo) ? Storage::disk('logos')->get($client->logo) : null;
+
+                return ($client?->logo && Storage::disk('logos')->exists($client->logo)) ? Storage::disk('logos')->get($client->logo) : null;
             });
     }
 }

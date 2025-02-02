@@ -4,11 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Enums\Role;
 use App\Filament\Resources\MenuResource\Pages\CreateMenu;
+use App\Filament\Resources\MenuResource\Pages\EditMenu;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Menu;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
@@ -17,7 +18,7 @@ use Tests\TestCase;
 
 class MenuResourceTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseTransactions;
 
     /**
      * It runs as we inject client id in CreateMenu.
@@ -95,5 +96,45 @@ class MenuResourceTest extends TestCase
         $menu = Menu::first();
 
         Storage::disk('menus')->assertExists($menu->image);
+    }
+
+    #[Test]
+    public function clientCanEditTheirMenuOnly(): void
+    {
+        $user = User::factory()->withClient(Role::OWNER)->createQuietly();
+        $menu = Menu::factory()->withClient($user->client)->createQuietly();
+
+        $secondMenu = Menu::factory()->createQuietly();
+
+        Livewire::actingAs($user)
+            ->test(EditMenu::class, ['record' => $menu->id])
+            ->assertOk();
+
+        $response = $this->actingAs($user)
+            ->get(route('filament.admin.resources.menus.edit', [
+                'record' => $secondMenu->id,
+            ]));
+
+        $response->assertNotFound();
+    }
+
+    #[Test]
+    public function adminCanEditAllMenu(): void
+    {
+        $user = User::factory()->asAdmin()->createQuietly();
+        $menu = Menu::factory()->createQuietly();
+
+        $secondMenu = Menu::factory()->createQuietly();
+
+        Livewire::actingAs($user)
+            ->test(EditMenu::class, ['record' => $menu->id])
+            ->assertOk();
+
+        $response = $this->actingAs($user)
+            ->get(route('filament.admin.resources.menus.edit', [
+                'record' => $secondMenu->id,
+            ]));
+
+        $response->assertOk();
     }
 }

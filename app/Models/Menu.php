@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,11 +35,11 @@ class Menu extends Model
         return $this->belongsTo(Client::class);
     }
 
-    public function scopeClient(Builder $query): void
+    public function scopeGetClientOwnMenu(Builder $query): void
     {
         $user = Auth::user();
-        $query->when($user->role, function ($query) use ($user) {
-            $query->whereIn('role', Role::getUserRoles($user->role));
+        $query->when($user->clientAccess(), function ($query) use ($user) {
+            $query->where('client_id', $user->client->id);
         });
     }
 }
