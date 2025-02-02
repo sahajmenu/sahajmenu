@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Client;
 use App\Models\Menu;
 use Illuminate\Database\Seeder;
@@ -14,7 +15,7 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Client::get()->each(function ($client) {
-            Menu::factory()->count(5)->withClient($client)->withCategory()->createQuietly();
+            Menu::factory()->count(5)->withClient($client)->withCategory(Category::all()->random())->createQuietly();
         });
     }
 }
