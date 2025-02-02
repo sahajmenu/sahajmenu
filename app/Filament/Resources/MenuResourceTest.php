@@ -9,6 +9,8 @@ use App\Models\Client;
 use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -23,6 +25,8 @@ class MenuResourceTest extends TestCase
     #[Test]
     public function clientCanCreateMenuWithoutPassingClientId(): void
     {
+        Storage::fake('menus');
+
         $user = User::factory()->withClient(Role::OWNER)->createQuietly();
         $category = Category::factory()->createQuietly([
             'client_id' => $user->client->id,
@@ -34,7 +38,7 @@ class MenuResourceTest extends TestCase
             'name' => 'Chicken Momo',
             'price' => 22,
             'category_id' => $category->id,
-            'images' => ['image.jpeg'],
+            'images' => UploadedFile::fake()->create('image.jpeg'),
         ];
 
         Livewire::test(CreateMenu::class)
@@ -49,11 +53,17 @@ class MenuResourceTest extends TestCase
             'client_id' => $user->client->id,
         ]);
 
+        $menu = Menu::first();
+
+        Storage::disk('menus')->assertExists($menu->image);
+
     }
 
     #[Test]
     public function adminNeedsToPassClientId(): void
     {
+        Storage::fake('menus');
+
         $user = User::factory()->asAdmin()->createQuietly();
         $client = Client::factory()->createQuietly();
         $category = Category::factory()->createQuietly([
@@ -81,5 +91,9 @@ class MenuResourceTest extends TestCase
             'category_id' => $category->id,
             'client_id' => $client->id,
         ]);
+
+        $menu = Menu::first();
+
+        Storage::disk('menus')->assertExists($menu->image);
     }
 }

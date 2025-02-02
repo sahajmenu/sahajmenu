@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MenuResource\Pages;
 use App\Filament\Resources\MenuResource\Pages\CreateMenu;
 use App\Models\Category;
-use App\Models\Client;
 use App\Models\Menu;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\FileUpload;
@@ -62,12 +61,11 @@ class MenuResource extends Resource
                     ->required()
                     ->hidden(auth()->user()->clientAccess()),
                 FileUpload::make('images')
+                    ->required()
+                    ->maxSize(5120)
                     ->multiple()
                     ->directory(function (Get $get) {
-                        $client = $get('client_id') ? Client::firstWhere('id', $get('client_id'))
-                            : auth()->user()->client;
-
-                        return "{$client->id}-{$client->subdomain}";
+                        return $get('client_id') ?? auth()->user()->client->id;
                     })
                     ->image()
                     ->panelLayout('grid')

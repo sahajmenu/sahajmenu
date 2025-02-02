@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Resources\ClientResource;
+use App\Services\ClientService;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Support\Facades\Storage;
 
 class CreateClient extends CreateRecord
 {
@@ -15,10 +15,6 @@ class CreateClient extends CreateRecord
      */
     protected function afterCreate(): void
     {
-        $client = $this->record;
-
-        Storage::disk('menus')
-            ->makeDirectory("{$client->id}-{$client->subdomain}");
-
+        resolve(ClientService::class)->createDirectoryForClientMenuImages($this->record);
     }
 }

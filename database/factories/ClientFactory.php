@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Enums\Role;
 use App\Models\Client;
 use App\Models\User;
+use App\Services\ClientService;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -45,8 +45,7 @@ class ClientFactory extends Factory
     public function withMenuImageFolder(): static
     {
         return $this->afterCreating(function (Client $client) {
-            Storage::disk('menus')
-                ->makeDirectory("{$client->id}-{$client->subdomain}");
+            resolve(ClientService::class)->createDirectoryForClientMenuImages($client);
         });
     }
 }
