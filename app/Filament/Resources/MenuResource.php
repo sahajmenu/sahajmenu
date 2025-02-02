@@ -83,11 +83,11 @@ class MenuResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')->searchable(),
                 TextColumn::make('price'),
-                TextColumn::make('category.name'),
+                TextColumn::make('category.name')->searchable(),
                 TextColumn::make('client.name'),
-            ])
+            ])->searchPlaceholder('Name,Category')
             ->filters([
                 //
             ])
