@@ -65,7 +65,8 @@ class AdminPanelProvider extends PanelProvider
                     ->url(fn (): string => ClientResource::getUrl('edit', ['record' => Auth::user()?->client]))
                     ->visible(fn (): bool => Auth::user()->clientAccess())
                     ->icon('heroicon-o-home-modern')
-                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit')),
+                    ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.clients.edit'))
+                    ->group('Management'),
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandLogo(function (): ?string {
