@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Actions;
 
 use App\Models\Client;
 use App\Models\Table;
 
-class TableService
+class ImportBulkTableAction
 {
-    public function importBulkTable(int $total, Client $client): void
+    public function handle(int $total, Client $client): void
     {
-        $max = Table::where('client_id', $client->id)
-            ->max('number');
+        $max = Table::where('client_id', $client->id)->max('number');
 
         if ($max) {
             $start = $max + 1;

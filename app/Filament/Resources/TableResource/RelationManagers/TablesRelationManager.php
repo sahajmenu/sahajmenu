@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\TableResource\RelationManagers;
 
-use App\Services\TableService;
+use App\Actions\ImportBulkTableAction;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -73,8 +73,8 @@ class TablesRelationManager extends RelationManager
                                     ->prefix('Table'),
                             ]),
                     ])->action(function (array $data): void {
-                        resolve(TableService::class)
-                            ->importBulkTable($data['total'], $this->ownerRecord);
+                        resolve(ImportBulkTableAction::class)
+                            ->handle($data['total'], $this->ownerRecord);
                         Notification::make()
                             ->title('Bulk Table Created')
                             ->success()

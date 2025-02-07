@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Actions;
 
 use App\Models\Client;
 use App\Models\Table;
@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class TableServiceTest extends TestCase
+class ImportBulkTableActionTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -16,7 +16,7 @@ class TableServiceTest extends TestCase
     public function bulkTableIfMaxIsNull(): void
     {
         $client = Client::factory()->createQuietly();
-        resolve(TableService::class)->importBulkTable(5, $client);
+        resolve(ImportBulkTableAction::class)->handle(5, $client);
         $this->assertEquals(5, $client->tables->count());
     }
 
@@ -31,7 +31,7 @@ class TableServiceTest extends TestCase
             ]);
         }
 
-        resolve(TableService::class)->importBulkTable(5, $client);
+        resolve(ImportBulkTableAction::class)->handle(5, $client);
         $this->assertEquals(8, $client->tables->count());
     }
 }
