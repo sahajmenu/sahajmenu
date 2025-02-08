@@ -44,6 +44,7 @@ enum Role: string
         return match ($role) {
             self::SUPER_ADMIN, self::ADMIN, self::OWNER => self::getAllClientRoles(),
             self::MANAGER => self::getManagerRoles(),
+            default => [],
         };
     }
 
@@ -53,6 +54,7 @@ enum Role: string
             self::SUPER_ADMIN => self::getSuperAdminRoles(),
             self::ADMIN, self::OWNER => self::getAllClientRoles(),
             self::MANAGER => self::getManagerRoles(),
+            default => [],
         };
     }
 
