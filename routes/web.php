@@ -10,5 +10,5 @@ Route::domain('{subdomain}.' . config('app.short_url'))
     });
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('filament.admin.auth.login');
 });
