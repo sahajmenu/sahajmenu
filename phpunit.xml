@@ -6,8 +6,7 @@
 >
     <testsuites>
         <testsuite name="Default">
-            <directory suffix="Test.php">./tests/Feature</directory>
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory suffix="Test.php">./app</directory>
         </testsuite>
     </testsuites>
     <source>
