@@ -40,11 +40,14 @@ jobs:
           cp .env.ci .env
           php artisan key:generate
 
-      - name: Config Cache
-        run : |
-          php artisan config:cache
-
       - name: Run Testsuite
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: mysql
+          DB_PORT: 3306
+          DB_DATABASE: cafe_testing
+          DB_USERNAME: root
+          DB_PASSWORD: password
         run: |
           php artisan migrate:fresh --env=testing
           php artisan test
