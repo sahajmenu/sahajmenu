@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\Role;
+use App\Enums\Status;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,6 +31,8 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'role',
         'client_id',
+        'suspended_at',
+        'status'
     ];
 
     /**
@@ -40,6 +43,11 @@ class User extends Authenticatable implements FilamentUser
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'suspended_at' => 'datetime',
+        'status' => Status::class
     ];
 
     public function client(): BelongsTo

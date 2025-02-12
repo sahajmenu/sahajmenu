@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Actions\SuspendUserAction;
+use App\Actions\UnsuspendUserAction;
 use App\Enums\Role;
+use App\Enums\Status;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
@@ -12,6 +15,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -19,6 +23,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserResource extends Resource
 {
@@ -62,6 +67,11 @@ class UserResource extends Resource
                     ->formatStateUsing(fn (Role $state): string => $state->getLabel()),
                 TextColumn::make('client.name')
                     ->default('Vendor'),
+
+                TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (Status $state): string => $state->color())
+                    ->formatStateUsing(fn (Status $state): string => $state->display()),
             ])
             ->filters([
                 SelectFilter::make('role')
@@ -73,6 +83,23 @@ class UserResource extends Resource
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
+                    BulkAction::make('Suspend')
+                        ->icon('heroicon-o-no-symbol')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each(function (User $record) {
+                            resolve(SuspendUserAction::class)->handle($record);
+                        }))
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('Unsuspend')
+                        ->icon('heroicon-o-check')
+                        ->color('success')
+                        ->requiresConfirmation()
+                        ->action(fn (Collection $records) => $records->each(function (User $record) {
+                            resolve(UnsuspendUserAction::class)->handle($record);
+                        }))
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ]);
     }

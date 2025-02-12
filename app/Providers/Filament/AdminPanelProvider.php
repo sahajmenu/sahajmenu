@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Resources\ClientResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -31,9 +32,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('app')
             ->domain(config('app.short_url'))
-            ->login()
+            ->login(Login::class)
             ->colors([
-                'primary' => Color::Fuchsia,
+                'primary' => Color::Blue,
             ])
             ->font('Sora')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
