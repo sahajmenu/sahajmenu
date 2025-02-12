@@ -17,8 +17,6 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -85,7 +83,6 @@ class TablesRelationManager extends RelationManager
                 ActionGroup::make([
                     EditAction::make()
                         ->slideOver(),
-                    DeleteAction::make(),
                     ViewAction::make()
                         ->infolist([
                             Split::make([
@@ -115,7 +112,6 @@ class TablesRelationManager extends RelationManager
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
                 ]),
             ])->defaultSort('number');
     }
