@@ -19,6 +19,9 @@ class Client extends Model
         'subdomain',
         'slug',
         'logo',
+        'status',
+        'suspended_at',
+        'expires_at'
     ];
 
     public function users(): HasMany

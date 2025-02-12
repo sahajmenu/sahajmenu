@@ -3,13 +3,14 @@
 namespace App\Actions;
 
 use App\Enums\Status;
+use App\Models\Client;
 use App\Models\User;
 
 class SuspendUserAction
 {
-    public function handle(User $user): void
+    public function handle(User|Client $record): void
     {
-        $user->update([
+        $record->update([
             'suspended_at' => now(),
             'status' => Status::SUSPENDED
         ]);

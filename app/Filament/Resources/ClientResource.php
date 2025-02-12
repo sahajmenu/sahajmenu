@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Common\BulkActions\SuspendUnsuspendBulkAction;
 use App\Filament\Resources\ClientResource\Pages\CreateClient;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Filament\Resources\ClientResource\Pages\ListClients;
@@ -73,8 +74,9 @@ class ClientResource extends Resource
                 EditAction::make(),
             ])
             ->bulkActions([
-                BulkActionGroup::make([
-                ]),
+                BulkActionGroup::make(
+                    resolve(SuspendUnsuspendBulkAction::class)->handle()
+                )
             ]);
     }
 
