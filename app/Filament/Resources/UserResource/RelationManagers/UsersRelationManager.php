@@ -11,11 +11,15 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -87,6 +91,28 @@ class UsersRelationManager extends RelationManager
             ->actions([
                 ActionGroup::make([
                     EditAction::make(),
+                    ViewAction::make()
+                    ->infolist([
+                        Section::make('Status History')
+                        ->schema([
+                            RepeatableEntry::make('status')
+                                ->label('')
+                                ->getStateUsing(function ($record) {
+                                    return $record->status->sortByDesc('id');
+                                })
+                                ->schema([
+                                    TextEntry::make('status')
+                                        ->badge()
+                                        ->color(fn (Status $state): string => $state->color())
+                                        ->formatStateUsing(fn (Status $state): string => $state->display()),
+                                    TextEntry::make('created_at')
+                                        ->label('Created Date')
+                                        ->since()
+                                        ->dateTimeTooltip(),
+                                    TextEntry::make('reason')
+                                ])->columns(2)->contained(true)->grid(2)
+                        ])
+                    ])
                 ]),
             ])
             ->bulkActions([
