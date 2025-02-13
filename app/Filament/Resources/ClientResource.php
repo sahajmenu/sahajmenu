@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Common\BulkActions\SuspendUnsuspendBulkAction;
 use App\Filament\Resources\ClientResource\Pages\CreateClient;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Filament\Resources\ClientResource\Pages\ListClients;
@@ -16,7 +15,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -72,11 +70,6 @@ class ClientResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make(
-                    resolve(SuspendUnsuspendBulkAction::class)->handle()
-                )
             ]);
     }
 
