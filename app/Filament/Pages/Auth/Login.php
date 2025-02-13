@@ -41,7 +41,7 @@ class Login extends BasePage
             Filament::auth()->logout();
 
             throw ValidationException::withMessages([
-                'data.email' => 'Your account is suspended'
+                'data.email' => $user->status->errorMessage()
             ]);
         }
 

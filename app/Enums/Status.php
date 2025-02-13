@@ -25,4 +25,13 @@ enum Status: string
             self::EXPIRED => 'warning',
         };
     }
+
+    public function errorMessage(): string
+    {
+        return match ($this) {
+            self::SUSPENDED => 'Your account is suspended',
+            self::EXPIRED => 'Your organization is expired',
+            default => ''
+        };
+    }
 }
