@@ -10,6 +10,7 @@ use App\Filament\Resources\TableResource\RelationManagers\TablesRelationManager;
 use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
 use App\Models\Client;
 use App\Traits\AdminAccess;
+use App\Traits\HasActiveIcon;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -24,6 +25,7 @@ use Illuminate\Support\Str;
 class ClientResource extends Resource
 {
     use AdminAccess;
+    use HasActiveIcon;
 
     protected static ?string $model = Client::class;
 

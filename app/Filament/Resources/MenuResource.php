@@ -7,6 +7,7 @@ use App\Filament\Resources\MenuResource\Pages\EditMenu;
 use App\Filament\Resources\MenuResource\Pages\ListMenus;
 use App\Models\Category;
 use App\Models\Menu;
+use App\Traits\HasActiveIcon;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -22,6 +23,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class MenuResource extends Resource
 {
+    use HasActiveIcon;
+
     protected static ?string $model = Menu::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';

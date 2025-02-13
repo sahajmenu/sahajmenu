@@ -10,6 +10,7 @@ use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
 use App\Traits\AdminAccess;
+use App\Traits\HasActiveIcon;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 class UserResource extends Resource
 {
     use AdminAccess;
+    use HasActiveIcon;
 
     protected static ?string $model = User::class;
 
