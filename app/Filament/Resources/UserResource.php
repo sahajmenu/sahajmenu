@@ -63,7 +63,6 @@ class UserResource extends Resource
                     ->formatStateUsing(fn (Role $state): string => $state->getLabel()),
                 TextColumn::make('client.name')
                     ->default('Vendor'),
-
                 TextColumn::make('latestStatus.status')
                     ->label('Status')
                     ->badge()

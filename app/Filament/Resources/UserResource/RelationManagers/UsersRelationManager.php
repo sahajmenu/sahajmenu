@@ -3,6 +3,9 @@
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Enums\Role;
+use App\Enums\Status;
+use App\Models\User;
+use App\Services\StatusHistoryService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -64,12 +67,22 @@ class UsersRelationManager extends RelationManager
                 TextColumn::make('email'),
                 TextColumn::make('role')
                     ->formatStateUsing(fn (Role $state): string => $state->getLabel()),
+                TextColumn::make('latestStatus.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (Status $state): string => $state->color())
+                    ->formatStateUsing(fn (Status $state): string => $state->display()),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                ->after(function (User $user) {
+                    resolve(StatusHistoryService::class)->create(
+                        record: $user
+                    );
+                })
             ])
             ->actions([
                 ActionGroup::make([

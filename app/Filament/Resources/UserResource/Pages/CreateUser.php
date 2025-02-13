@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Enums\Role;
 use App\Filament\Resources\UserResource;
+use App\Services\StatusHistoryService;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
@@ -15,6 +16,13 @@ class CreateUser extends CreateRecord
         $data['role'] = Role::ADMIN;
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        resolve(StatusHistoryService::class)->create(
+            record: $this->record,
+        );
     }
 
     protected function getRedirectUrl(): string

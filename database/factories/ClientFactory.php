@@ -7,6 +7,7 @@ use App\Enums\Status;
 use App\Models\Client;
 use App\Models\User;
 use App\Services\ClientService;
+use App\Services\StatusHistoryService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -40,9 +41,11 @@ class ClientFactory extends Factory
                 'client_id' => $client->id,
                 'role' => $role,
             ]);
-            $user->status()->create([
-                'status' => $status
-            ]);
+
+            resolve(StatusHistoryService::class)->create(
+                record: $user,
+                status: $status,
+            );
         });
     }
 
@@ -56,9 +59,10 @@ class ClientFactory extends Factory
     public function withStageHistory(Status $status = Status::ACTIVE): static
     {
         return $this->afterCreating(function (Client $client) use ($status) {
-            $client->status()->create([
-                'status' => $status,
-            ]);
+            resolve(StatusHistoryService::class)->create(
+                record: $client,
+                status: $status
+            );
         });
     }
 }

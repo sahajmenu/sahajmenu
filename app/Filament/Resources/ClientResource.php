@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Status;
 use App\Filament\Resources\ClientResource\Pages\CreateClient;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Filament\Resources\ClientResource\Pages\ListClients;
@@ -64,6 +65,11 @@ class ClientResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('slug'),
+                TextColumn::make('latestStatus.status')
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (Status $state): string => $state->color())
+                    ->formatStateUsing(fn (Status $state): string => $state->display()),
             ])
             ->filters([
                 //
