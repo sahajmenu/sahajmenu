@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -31,8 +32,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'status' => Status::ACTIVE
+            'remember_token' => Str::random(10)
         ];
     }
 
@@ -60,11 +60,26 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function withClient(Role $role): static
+    public function withClient(Role $role, Status $status = Status::ACTIVE): static
     {
-        return $this->state(fn (array $attributes) => [
-            'client_id' => Client::factory()->createQuietly(),
-            'role' => $role,
-        ]);
+        return $this->state(function () use ($role, $status) {
+            $client = Client::factory()->createQuietly();
+            $client->status()->create([
+                'status' => $status,
+            ]);
+            return [
+                'client_id' => $client->id,
+                'role' => $role,
+            ];
+        });
+    }
+
+    public function withStageHistory(Status $status = Status::ACTIVE): static
+    {
+        return $this->afterCreating(function (User $user) use ($status) {
+            $user->status()->create([
+                'status' => $status,
+            ]);
+        });
     }
 }

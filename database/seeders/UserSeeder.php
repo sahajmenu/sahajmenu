@@ -13,13 +13,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // create super admin
-        User::factory()->asSuperAdmin()->createQuietly([
+        User::factory()->asSuperAdmin()->withStageHistory()->createQuietly([
             'name' => 'Super Admin',
             'email' => 'super@example.com',
             'password' => bcrypt('password'),
         ]);
         // create admin
-        User::factory()->asAdmin()->createQuietly([
+        User::factory()->asAdmin()->withStageHistory()->createQuietly([
             'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),

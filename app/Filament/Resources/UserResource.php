@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\Role;
 use App\Enums\Status;
-use App\Filament\Common\BulkActions\SuspendUnsuspendBulkAction;
+use App\Filament\Common\Actions\SuspendUnsuspendAction;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
@@ -14,7 +14,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -64,7 +64,8 @@ class UserResource extends Resource
                 TextColumn::make('client.name')
                     ->default('Vendor'),
 
-                TextColumn::make('status')
+                TextColumn::make('latestStatus.status')
+                    ->label('Status')
                     ->badge()
                     ->color(fn (Status $state): string => $state->color())
                     ->formatStateUsing(fn (Status $state): string => $state->display()),
@@ -74,12 +75,10 @@ class UserResource extends Resource
                     ->options(Role::getUserRoleOptions(auth()->user()->role)),
             ])
             ->actions([
-                EditAction::make(),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make(
-                    resolve(SuspendUnsuspendBulkAction::class)->handle()
-                ),
+                ActionGroup::make([
+                    EditAction::make(),
+                    ...resolve(SuspendUnsuspendAction::class)->handle()
+                ])
             ]);
     }
 

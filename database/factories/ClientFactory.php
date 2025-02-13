@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\Role;
+use App\Enums\Status;
 use App\Models\Client;
 use App\Models\User;
 use App\Services\ClientService;
@@ -32,12 +33,15 @@ class ClientFactory extends Factory
         ];
     }
 
-    public function withUser(Role $role): static
+    public function withUser(Role $role, Status $status = Status::ACTIVE): static
     {
-        return $this->afterCreating(function (Client $client) use ($role) {
-            User::factory()->createQuietly([
+        return $this->afterCreating(function (Client $client) use ($role, $status) {
+            $user = User::factory()->createQuietly([
                 'client_id' => $client->id,
                 'role' => $role,
+            ]);
+            $user->status()->create([
+                'status' => $status
             ]);
         });
     }
@@ -46,6 +50,15 @@ class ClientFactory extends Factory
     {
         return $this->afterCreating(function (Client $client) {
             resolve(ClientService::class)->createDirectoryForClientMenuImages($client);
+        });
+    }
+
+    public function withStageHistory(Status $status = Status::ACTIVE): static
+    {
+        return $this->afterCreating(function (Client $client) use ($status) {
+            $client->status()->create([
+                'status' => $status,
+            ]);
         });
     }
 }
