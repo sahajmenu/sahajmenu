@@ -15,6 +15,7 @@ class StatusHistory extends Model
     protected $fillable = [
         'reason',
         'status',
+        'actioned_by'
     ];
 
     protected $casts = [
