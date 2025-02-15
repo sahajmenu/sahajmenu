@@ -109,7 +109,10 @@ class UsersRelationManager extends RelationManager
                                         ->label('Created Date')
                                         ->since()
                                         ->dateTimeTooltip(),
-                                    TextEntry::make('reason')
+                                    TextEntry::make('reason'),
+                                    TextEntry::make('user.name')
+                                        ->label('Actioned By')
+                                        ->default('System')
                                 ])->columns(2)->contained(true)->grid(2)
                         ])
                     ]),
