@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Feature;
 
 use App\Enums\Role;
 use App\Filament\Resources\MenuResource\Pages\CreateMenu;
