@@ -101,7 +101,7 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->teamFilterRoles();
+        return parent::getEloquentQuery()->filterByUserRole();
     }
 
     public static function canAccess(): bool

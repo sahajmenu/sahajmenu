@@ -4,6 +4,7 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Enums\Role;
 use App\Enums\Status;
+use App\Filament\Common\Actions\SuspendUnsuspendAction;
 use App\Models\User;
 use App\Services\StatusHistoryService;
 use Filament\Forms\Components\Actions\Action;
@@ -16,7 +17,6 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
@@ -112,13 +112,9 @@ class UsersRelationManager extends RelationManager
                                     TextEntry::make('reason')
                                 ])->columns(2)->contained(true)->grid(2)
                         ])
-                    ])
+                    ]),
+                    ...resolve(SuspendUnsuspendAction::class)->handle(),
                 ]),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make([
-                ]),
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->teamFilterRoles());
+            ])->modifyQueryUsing(fn (Builder $query) => $query->filterByUserRole());
     }
 }

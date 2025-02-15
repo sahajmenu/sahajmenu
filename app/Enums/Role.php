@@ -15,7 +15,6 @@ enum Role: string
     public static function getSuperAdminRoles(): array
     {
         return [
-            self::SUPER_ADMIN,
             self::ADMIN,
             self::OWNER,
             self::MANAGER,
@@ -23,12 +22,20 @@ enum Role: string
         ];
     }
 
-    public static function getAllClientRoles(): array
+    public static function getAdminRoles(): array
     {
         return [
             self::OWNER,
             self::MANAGER,
             self::FRONT_DESK,
+        ];
+    }
+
+    public static function getOwnerRoles(): array
+    {
+        return [
+            self::MANAGER,
+            self::FRONT_DESK
         ];
     }
 
@@ -42,7 +49,8 @@ enum Role: string
     public static function getClientRoles(Role $role): array
     {
         return match ($role) {
-            self::SUPER_ADMIN, self::ADMIN, self::OWNER => self::getAllClientRoles(),
+            self::SUPER_ADMIN, self::ADMIN => self::getAdminRoles(),
+            self::OWNER => self::getOwnerRoles(),
             self::MANAGER => self::getManagerRoles(),
             default => [],
         };
@@ -52,7 +60,8 @@ enum Role: string
     {
         return match ($role) {
             self::SUPER_ADMIN => self::getSuperAdminRoles(),
-            self::ADMIN, self::OWNER => self::getAllClientRoles(),
+            self::ADMIN => self::getAdminRoles(),
+            self::OWNER => self::getOwnerRoles(),
             self::MANAGER => self::getManagerRoles(),
             default => [],
         };

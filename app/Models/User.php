@@ -64,7 +64,7 @@ class User extends Authenticatable implements FilamentUser
         return $this->role === Role::SUPER_ADMIN;
     }
 
-    public function scopeTeamFilterRoles(Builder $query): void
+    public function scopeFilterByUserRole(Builder $query): void
     {
         $user = Auth::user();
         $query->when($user->role, function ($query) use ($user) {
