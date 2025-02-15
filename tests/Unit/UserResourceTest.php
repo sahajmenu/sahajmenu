@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace Tests\Unit;
 
 use App\Enums\Role;
+use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\DataProvider;
