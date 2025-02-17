@@ -47,7 +47,7 @@ class UsersRelationManager extends RelationManager
                     ->suffixAction(
                         Action::make('generateRandomPassword')
                             ->icon('heroicon-m-key')
-                            ->action(function (Set $set, $state) {
+                            ->action(function (Set $set, $state): void {
                                 $set('password', Str::random(10));
                             })
                     )
@@ -82,10 +82,8 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                ->after(function (User $user) {
-                    resolve(StatusHistoryService::class)->create(
-                        record: $user
-                    );
+                ->after(function (User $user, StatusHistoryService $statusHistoryService): void {
+                    $statusHistoryService->create(record: $user);
                 })
             ])
             ->actions([

@@ -67,7 +67,7 @@ class User extends Authenticatable implements FilamentUser
     public function scopeFilterByUserRole(Builder $query): void
     {
         $user = Auth::user();
-        $query->when($user->role, function ($query) use ($user) {
+        $query->when($user->role, function ($query) use ($user): void {
             $query->whereIn('role', Role::getUserRoles($user->role));
         });
     }

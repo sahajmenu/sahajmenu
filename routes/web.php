@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain('{subdomain}.' . config('app.short_url'))
     ->middleware(ValidSubDomain::class)
-    ->group(function () {
+    ->group(function (): void {
         Route::get('/', function () {
             return view('client-home');
         });

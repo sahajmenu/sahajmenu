@@ -38,7 +38,7 @@ class Menu extends Model
     public function scopeGetClientOwnMenu(Builder $query): void
     {
         $user = Auth::user();
-        $query->when($user->clientAccess(), function ($query) use ($user) {
+        $query->when($user->clientAccess(), function ($query) use ($user): void {
             $query->where('client_id', $user->client->id);
         });
     }
