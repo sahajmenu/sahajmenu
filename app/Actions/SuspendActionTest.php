@@ -12,6 +12,14 @@ class SuspendActionTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private SuspendAction $suspendAction;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->suspendAction = resolve(SuspendAction::class);
+    }
+
     public function testAdminCanSuspendUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStageHistory()->createQuietly();
@@ -22,7 +30,7 @@ class SuspendActionTest extends TestCase
 
         $this->assertEquals(Status::ACTIVE, $user->latestStatus->status);
 
-        resolve(SuspendAction::class)->handle(record: $user);
+        $this->suspendAction->handle(record: $user);
 
         $user->refresh();
 
@@ -38,7 +46,7 @@ class SuspendActionTest extends TestCase
 
         $this->assertEquals(Status::ACTIVE, $user->latestStatus->status);
 
-        resolve(SuspendAction::class)->handle(record: $user);
+        $this->suspendAction->handle(record: $user);
 
         $user->refresh();
 

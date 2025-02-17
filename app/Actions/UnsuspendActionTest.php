@@ -12,6 +12,14 @@ class UnsuspendActionTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private UnsuspendAction $unsuspendAction;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->unsuspendAction = resolve(UnsuspendAction::class);
+    }
+
     public function testAdminCanUnsuspendUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStageHistory()->createQuietly();
@@ -22,7 +30,7 @@ class UnsuspendActionTest extends TestCase
 
         $this->assertEquals(Status::SUSPENDED, $user->latestStatus->status);
 
-        resolve(UnsuspendAction::class)->handle(record: $user);
+        $this->unsuspendAction->handle(record: $user);
 
         $user->refresh();
 
@@ -39,7 +47,7 @@ class UnsuspendActionTest extends TestCase
 
         $this->assertEquals(Status::SUSPENDED, $user->latestStatus->status);
 
-        resolve(UnsuspendAction::class)->handle(record: $user);
+        $this->unsuspendAction->handle(record: $user);
 
         $user->refresh();
 
