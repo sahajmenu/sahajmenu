@@ -15,7 +15,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
@@ -107,10 +106,6 @@ class TablesRelationManager extends RelationManager
                                     ->grow(false),
                             ])->from('md'),
                         ])->slideOver(),
-                ]),
-            ])
-            ->bulkActions([
-                BulkActionGroup::make([
                 ]),
             ])->defaultSort('number');
     }

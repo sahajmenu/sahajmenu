@@ -91,6 +91,7 @@ class UsersRelationManager extends RelationManager
                 ActionGroup::make([
                     EditAction::make(),
                     ViewAction::make()
+                    ->slideOver()
                     ->infolist([
                         Section::make('Status History')
                         ->schema([
@@ -108,7 +109,15 @@ class UsersRelationManager extends RelationManager
                                         ->label('Created Date')
                                         ->since()
                                         ->dateTimeTooltip(),
-                                    TextEntry::make('reason'),
+                                    TextEntry::make('reason')
+                                        ->limit(50)
+                                        ->tooltip(function (TextEntry $entry): ?string {
+                                            $state = $entry->getState();
+                                            if (strlen($state) <= $entry->getCharacterLimit()) {
+                                                return null;
+                                            }
+                                            return $state;
+                                        }),
                                     TextEntry::make('user.name')
                                         ->label('Actioned By')
                                         ->default('System')

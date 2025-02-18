@@ -37,7 +37,7 @@ class ClientPolicyTest extends TestCase
         $user = User::factory()->withClient($role)->createQuietly();
 
         $this->assertTrue($user->can('viewAny', Client::class));
-        $this->assertTrue($user->can('view', $user->client));
+        $this->assertTrue($user->cannot('view', $user->client));
         $this->assertTrue($user->cannot('create', Client::class));
         $this->assertTrue($user->can('update', $user->client));
         $this->assertTrue($user->cannot('delete', $user->client));

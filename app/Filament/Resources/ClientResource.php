@@ -6,18 +6,21 @@ use App\Enums\Status;
 use App\Filament\Resources\ClientResource\Pages\CreateClient;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Filament\Resources\ClientResource\Pages\ListClients;
-use App\Filament\Resources\TableResource\RelationManagers\TablesRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
+use App\Filament\Resources\ClientResource\Pages\ViewClient;
 use App\Models\Client;
 use App\Traits\AdminAccess;
 use App\Traits\HasActiveIcon;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -77,16 +80,11 @@ class ClientResource extends Resource
                 //
             ])
             ->actions([
-                EditAction::make(),
+                ActionGroup::make([
+                    EditAction::make(),
+                    ViewAction::make()
+                ])
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            UsersRelationManager::class,
-            TablesRelationManager::class,
-        ];
     }
 
     public static function getPages(): array
@@ -94,8 +92,17 @@ class ClientResource extends Resource
         return [
             'index' => ListClients::route('/'),
             'create' => CreateClient::route('/create'),
+            'view' => ViewClient::route('/{record}'),
             'edit' => EditClient::route('/{record}/edit'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('name')
+            ]);
     }
 
     public static function shouldRegisterNavigation(): bool

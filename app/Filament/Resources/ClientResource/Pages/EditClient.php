@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Resources\ClientResource;
+use App\Filament\Resources\TableResource\RelationManagers\TablesRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
 use App\Traits\AdminAccess;
 use Filament\Resources\Pages\EditRecord;
 
@@ -22,6 +24,14 @@ class EditClient extends EditRecord
         }
 
         return [];
+    }
+
+    public function getRelationManagers(): array
+    {
+        return [
+            UsersRelationManager::class,
+            TablesRelationManager::class,
+        ];
     }
 
     protected function getHeaderActions(): array

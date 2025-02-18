@@ -32,7 +32,7 @@ class ClientPolicy
      */
     public function view(User $user, Client $client): bool
     {
-        return $user->clientAccess($user) && $this->clientBelongsToUser($user, $client);
+        return false;
     }
 
     /**
