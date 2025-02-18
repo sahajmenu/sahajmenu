@@ -18,18 +18,18 @@ class SuspendUnsuspendAction
                 name: 'suspend',
                 icon: 'heroicon-o-lock-closed',
                 color: 'danger',
-                action : SuspendAction::class
+                action : new SuspendAction(),
             ),
             $this->makeAction(
                 name: 'unsuspend',
                 icon: 'heroicon-o-lock-open',
                 color: 'success',
-                action : UnsuspendAction::class
+                action : new UnsuspendAction(),
             ),
         ];
     }
 
-    private function makeAction(string $name, string $icon, string $color, string $action): Action
+    private function makeAction(string $name, string $icon, string $color, SuspendAction|UnsuspendAction $action): Action
     {
         return Action::make($name)
             ->icon($icon)
@@ -41,9 +41,6 @@ class SuspendUnsuspendAction
                     ->nullable()
                     ->maxLength(255)
             ])
-            ->action(fn (User|Client $record, array $data) => resolve($action)->handle(
-                record: $record,
-                reason: $data['reason']
-            ));
+            ->action(fn (User|Client $record, array $data) => $action->handle(record: $record, reason: $data['reason']));
     }
 }
