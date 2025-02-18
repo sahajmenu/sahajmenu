@@ -58,7 +58,8 @@ class UsersRelationManager extends RelationManager
                     )
                     ->searchable()
                     ->required()
-                    ->live(),
+                    ->in(Role::getClientRoleOptions(auth()->user()->role)->keys())
+                    ->live()
             ]);
     }
 
