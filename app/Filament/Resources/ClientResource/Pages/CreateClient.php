@@ -10,6 +10,13 @@ class CreateClient extends CreateRecord
 {
     protected static string $resource = ClientResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $days = (int) $data['days'] ?? 14;
+        $data['expires_at'] = now()->addDays($days);
+        return $data;
+    }
+
     /**
      * Creates a folder for client menu images
      */

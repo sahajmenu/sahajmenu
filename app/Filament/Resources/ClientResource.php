@@ -54,6 +54,16 @@ class ClientResource extends Resource
                         TextInput::make('phone')->numeric(),
                     ])->columns(2),
 
+                Section::make('Subscription')
+                    ->icon('heroicon-m-banknotes')
+                    ->description('You can add number of days for subscription. 14 is the default value')
+                    ->schema([
+                        TextInput::make('days')
+                            ->label('Number of Days')
+                            ->numeric()
+                            ->minValue(1)
+                    ])->visibleOn('create'),
+
                 Section::make('Client Logo')
                     ->icon('heroicon-m-photo')
                     ->schema([
@@ -75,6 +85,8 @@ class ClientResource extends Resource
                     ->badge()
                     ->color(fn (Status $state): string => $state->color())
                     ->formatStateUsing(fn (Status $state): string => $state->display()),
+                TextColumn::make('expires_at')
+                    ->date()
             ])
             ->filters([
                 //
