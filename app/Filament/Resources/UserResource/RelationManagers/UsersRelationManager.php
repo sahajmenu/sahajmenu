@@ -97,9 +97,7 @@ class UsersRelationManager extends RelationManager
                         ->schema([
                             RepeatableEntry::make('status')
                                 ->label('')
-                                ->getStateUsing(function ($record) {
-                                    return $record->status->sortByDesc('id');
-                                })
+                                ->getStateUsing(fn ($record) => $record->status->sortByDesc('id'))
                                 ->schema([
                                     TextEntry::make('status')
                                         ->badge()

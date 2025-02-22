@@ -24,7 +24,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->clientAccess($user);
+        return $user->clientAccess();
     }
 
     /**
@@ -48,7 +48,7 @@ class ClientPolicy
      */
     public function update(User $user, Client $client): bool
     {
-        return $user->clientAccess($user) && $this->clientBelongsToUser($user, $client);
+        return $user->clientAccess() && $this->clientBelongsToUser($user, $client);
     }
 
     /**

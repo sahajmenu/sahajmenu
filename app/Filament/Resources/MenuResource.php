@@ -72,9 +72,7 @@ class MenuResource extends Resource
                     ->required()
                     ->maxSize(5120)
                     ->multiple()
-                    ->directory(function (Get $get) {
-                        return $get('client_id') ?? auth()->user()->client->id;
-                    })
+                    ->directory(fn (Get $get) => $get('client_id') ?? auth()->user()->client->id)
                     ->image()
                     ->panelLayout('grid')
                     ->reorderable()

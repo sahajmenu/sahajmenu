@@ -38,9 +38,7 @@ class TablesRelationManager extends RelationManager
                     ->rules(['gt:0'])
                     ->prefix('Table')
                     ->autofocus(false)
-                    ->unique(table: 'tables', column: 'number', ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
-                        return $rule->where('client_id', $this->ownerRecord->id);
-                    }),
+                    ->unique(table: 'tables', column: 'number', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('client_id', $this->ownerRecord->id)),
             ]);
     }
 
