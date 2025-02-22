@@ -121,6 +121,10 @@ class MenuResourceTest extends TestCase
     #[Test]
     public function adminCanEditAllMenu(): void
     {
+        $abc ='hello';
+
+
+
         $user = User::factory()->asAdmin()->createQuietly();
         $menu = Menu::factory()->withClient()->withCategory()->createQuietly();
 
