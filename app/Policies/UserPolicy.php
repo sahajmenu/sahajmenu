@@ -78,11 +78,6 @@ class UserPolicy
 
     private function userBelongsToClient(User $user, User $model): bool
     {
-        if ($user->clientAccess() &&
-            $user->client_id === $model->client_id) {
-            return true;
-        }
-
-        return false;
+        return $user->clientAccess() && $user->client_id === $model->client_id;
     }
 }

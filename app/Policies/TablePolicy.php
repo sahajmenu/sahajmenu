@@ -79,11 +79,6 @@ class TablePolicy
 
     private function tableBelongsToClient(User $user, Table $table): bool
     {
-        if ($user->clientAccess() &&
-            $user->client_id === $table->client_id) {
-            return true;
-        }
-
-        return false;
+        return $user->clientAccess() && $user->client_id === $table->client_id;
     }
 }

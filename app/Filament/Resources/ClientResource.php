@@ -47,7 +47,7 @@ class ClientResource extends Resource
                     ->description('You can update or edit the details here.')
                     ->schema([
                         TextInput::make('name')
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state)))
+                            ->afterStateUpdated(fn (Set $set, ?string $state): mixed => $set('slug', Str::slug($state)))
                             ->lazy()
                             ->required(),
                         TextInput::make('subdomain')->required()->unique(ignoreRecord: true),
