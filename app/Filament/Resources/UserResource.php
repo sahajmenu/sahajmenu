@@ -7,6 +7,7 @@ namespace App\Filament\Resources;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Filament\Common\Actions\SuspendUnsuspendAction;
+use App\Filament\Common\Forms\UserForm;
 use App\Filament\Resources\StatusHistoryResource\RelationManagers\StatusRelationManager;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
@@ -15,7 +16,6 @@ use App\Models\User;
 use App\Traits\AdminAccess;
 use App\Traits\HasActiveIcon;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\ActionGroup;
@@ -41,20 +41,8 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Section::make()
-                    ->schema([
-                        TextInput::make('name')
-                            ->required(),
-                        TextInput::make('email')
-                            ->required()
-                            ->email()
-                            ->unique(ignoreRecord: true),
-                        TextInput::make('password')
-                            ->required()
-                            ->password()
-                            ->revealable()
-                            ->visibleOn('create'),
-                    ])
-                    ->columns(2),
+                    ->schema(UserForm::make($form))
+                    ->columns(2)
             ]);
     }
 

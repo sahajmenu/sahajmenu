@@ -21,7 +21,6 @@ class Client extends Model
         'address',
         'phone',
         'subdomain',
-        'slug',
         'logo',
         'expires_at'
     ];

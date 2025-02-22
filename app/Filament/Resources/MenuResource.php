@@ -39,10 +39,15 @@ class MenuResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->string(),
+                    ->string()
+                    ->maxLength(255),
                 TextInput::make('price')
                     ->required()
-                    ->numeric(),
+                    ->numeric()
+                    ->integer()
+                    ->minValue(1)
+                    ->maxValue(10000)
+                    ->prefixIcon('heroicon-o-currency-rupee'),
                 SelectTree::make('category_id')
                     ->label('Category')
                     ->withCount()

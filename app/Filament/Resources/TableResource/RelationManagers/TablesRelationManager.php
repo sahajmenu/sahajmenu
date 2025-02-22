@@ -37,7 +37,7 @@ class TablesRelationManager extends RelationManager
                     ->required()
                     ->integer()
                     ->minValue(1)
-                    ->rules(['gt:0'])
+                    ->maxValue(50)
                     ->prefix('Table')
                     ->autofocus(false)
                     ->unique(table: 'tables', column: 'number', ignoreRecord: true, modifyRuleUsing: fn (Unique $rule) => $rule->where('client_id', $this->ownerRecord->id)),

@@ -7,13 +7,10 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Filament\Common\Actions\SuspendUnsuspendAction;
+use App\Filament\Common\Forms\UserForm;
 use App\Models\User;
 use App\Services\StatusHistoryService;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -25,7 +22,6 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Str;
 
 class UsersRelationManager extends RelationManager
 {
@@ -35,34 +31,7 @@ class UsersRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
-                    ->required()
-                    ->email()
-                    ->unique(ignoreRecord: true),
-                TextInput::make('password')
-                    ->required()
-                    ->password()
-                    ->revealable()
-                    ->suffixAction(
-                        Action::make('generateRandomPassword')
-                            ->icon('heroicon-m-key')
-                            ->action(function (Set $set, $state): void {
-                                $set('password', Str::random(10));
-                            })
-                    )
-                    ->visibleOn('create'),
-                Select::make('role')
-                    ->options(
-                        Role::getClientRoleOptions(auth()->user()->role),
-                    )
-                    ->searchable()
-                    ->required()
-                    ->in(Role::getClientRoleOptions(auth()->user()->role)->keys())
-                    ->live()
-            ]);
+            ->schema(UserForm::make($form, ['role']));
     }
 
     public function table(Table $table): Table

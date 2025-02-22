@@ -18,7 +18,7 @@ return new class () extends Migration {
     public function down(): void
     {
         Schema::table('status_histories', function (Blueprint $table) {
-            $table->dropColumn('actioned_by');
+            $table->dropForeign(['actioned_by']);
         });
     }
 };

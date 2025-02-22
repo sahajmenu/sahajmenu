@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Services\ClientService;
 use App\Services\StatusHistoryService;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Client>
@@ -32,7 +31,6 @@ class ClientFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->unique()->phoneNumber(),
             'subdomain' => lcfirst($name),
-            'slug' => Str::slug($name),
         ];
     }
 

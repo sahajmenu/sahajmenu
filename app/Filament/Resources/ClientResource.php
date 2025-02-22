@@ -17,7 +17,6 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Set;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -25,7 +24,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class ClientResource extends Resource
 {
@@ -47,13 +45,19 @@ class ClientResource extends Resource
                     ->description('You can update or edit the details here.')
                     ->schema([
                         TextInput::make('name')
-                            ->afterStateUpdated(fn (Set $set, ?string $state): mixed => $set('slug', Str::slug($state)))
-                            ->lazy()
-                            ->required(),
-                        TextInput::make('subdomain')->required()->unique(ignoreRecord: true),
-                        TextInput::make('slug')->required()->unique(ignoreRecord: true),
-                        TextInput::make('address')->string(),
-                        TextInput::make('phone')->numeric(),
+                            ->required()
+                            ->string()
+                            ->maxLength(255),
+                        TextInput::make('subdomain')
+                            ->required()
+                            ->string()
+                            ->maxLength(255)
+                            ->unique(ignoreRecord: true),
+                        TextInput::make('address')
+                            ->string()
+                            ->maxLength(255),
+                        TextInput::make('phone')
+                            ->tel()
                     ])->columns(2),
 
                 Section::make('Subscription')
@@ -63,7 +67,9 @@ class ClientResource extends Resource
                         TextInput::make('days')
                             ->label('Number of Days')
                             ->numeric()
+                            ->integer()
                             ->minValue(1)
+                            ->maxValue(360)
                     ])->visibleOn('create'),
 
                 Section::make('Client Logo')
