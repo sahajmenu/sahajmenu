@@ -69,7 +69,7 @@ class UserResource extends Resource
             ->actions([
                 ActionGroup::make([
                     EditAction::make(),
-                    ...resolve(SuspendUnsuspendAction::class)->handle()
+                    ...SuspendUnsuspendAction::make()
                 ])
             ]);
     }

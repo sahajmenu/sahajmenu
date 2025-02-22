@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Enums\Plan;
 use App\Enums\Status;
+use App\Filament\Common\Actions\SuspendUnsuspendAction;
 use App\Filament\Resources\ClientResource\Pages\CreateClient;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
 use App\Filament\Resources\ClientResource\Pages\ListClients;
@@ -59,19 +61,6 @@ class ClientResource extends Resource
                         TextInput::make('phone')
                             ->tel()
                     ])->columns(2),
-
-                Section::make('Subscription')
-                    ->icon('heroicon-m-banknotes')
-                    ->description('You can add number of days for subscription. 14 is the default value')
-                    ->schema([
-                        TextInput::make('days')
-                            ->label('Number of Days')
-                            ->numeric()
-                            ->integer()
-                            ->minValue(1)
-                            ->maxValue(360)
-                    ])->visibleOn('create'),
-
                 Section::make('Client Logo')
                     ->icon('heroicon-m-photo')
                     ->schema([
@@ -87,7 +76,10 @@ class ClientResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('slug'),
+                TextColumn::make('plan')
+                    ->badge()
+                    ->color(fn (Plan $state): string => $state->color())
+                    ->formatStateUsing(fn (Plan $state): string => $state->display()),
                 TextColumn::make('latestStatus.status')
                     ->label('Status')
                     ->badge()
@@ -102,7 +94,8 @@ class ClientResource extends Resource
             ->actions([
                 ActionGroup::make([
                     EditAction::make(),
-                    ViewAction::make()
+                    ViewAction::make(),
+                    ...SuspendUnsuspendAction::make(),
                 ])
             ]);
     }

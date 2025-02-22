@@ -93,7 +93,7 @@ class UsersRelationManager extends RelationManager
                                 ])->columns(2)->contained(true)->grid(2)
                         ])
                     ]),
-                    ...resolve(SuspendUnsuspendAction::class)->handle(),
+                    ...SuspendUnsuspendAction::make()
                 ]),
             ])->modifyQueryUsing(fn (Builder $query) => $query->filterByUserRole());
     }

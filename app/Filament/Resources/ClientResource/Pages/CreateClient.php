@@ -6,6 +6,7 @@ namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Resources\ClientResource;
 use App\Services\ClientService;
+use App\Services\StatusHistoryService;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateClient extends CreateRecord
@@ -14,8 +15,7 @@ class CreateClient extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $days = (int) $data['days'] ?? 14;
-        $data['expires_at'] = now()->addDays($days);
+        $data['expires_at'] = now()->addDays(14);
         return $data;
     }
 
@@ -25,5 +25,6 @@ class CreateClient extends CreateRecord
     protected function afterCreate(): void
     {
         resolve(ClientService::class)->createDirectoryForClientMenuImages($this->record);
+        resolve(StatusHistoryService::class)->create(record: $this->record);
     }
 }

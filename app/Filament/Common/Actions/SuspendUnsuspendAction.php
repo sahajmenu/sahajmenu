@@ -13,16 +13,16 @@ use Filament\Tables\Actions\Action;
 
 class SuspendUnsuspendAction
 {
-    public function handle(): array
+    public static function make(): array
     {
         return [
-            $this->makeAction(
+            self::makeAction(
                 name: 'suspend',
                 icon: 'heroicon-o-lock-closed',
                 color: 'danger',
                 action : new SuspendAction(),
             ),
-            $this->makeAction(
+            self::makeAction(
                 name: 'unsuspend',
                 icon: 'heroicon-o-lock-open',
                 color: 'success',
@@ -31,7 +31,7 @@ class SuspendUnsuspendAction
         ];
     }
 
-    private function makeAction(string $name, string $icon, string $color, SuspendAction|UnsuspendAction $action): Action
+    private static function makeAction(string $name, string $icon, string $color, SuspendAction|UnsuspendAction $action): Action
     {
         return Action::make($name)
             ->icon($icon)

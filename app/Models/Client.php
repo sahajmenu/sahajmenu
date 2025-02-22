@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Plan;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,12 @@ class Client extends Model
         'phone',
         'subdomain',
         'logo',
-        'expires_at'
+        'expires_at',
+        'plan'
+    ];
+
+    protected $casts = [
+        'plan' => Plan::class
     ];
 
     public function users(): HasMany

@@ -31,6 +31,7 @@ class ClientFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->unique()->phoneNumber(),
             'subdomain' => lcfirst($name),
+            'expires_at' => now()->addDays(14),
         ];
     }
 

@@ -25,7 +25,7 @@ class ClientSeeder extends Seeder
                 'name' => 'Sherpa Cafe',
                 'address' => 'Boudha',
                 'subdomain' => 'sherpa',
-                'phone' => '9842819652'
+                'phone' => '9842819652',
             ]);
 
         Client::factory()
@@ -38,7 +38,7 @@ class ClientSeeder extends Seeder
                 'name' => 'Lama Cafe',
                 'address' => 'Tinchuli',
                 'subdomain' => 'lama',
-                'phone' => '9842819672'
+                'phone' => '9842819672',
             ]);
 
     }

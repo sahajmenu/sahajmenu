@@ -27,7 +27,7 @@ class StatusRelationManager extends RelationManager
                     ->limit(50)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
-                        if (strlen($state) <= $column->getCharacterLimit()) {
+                        if ($state && strlen($state) <= $column->getCharacterLimit()) {
                             return null;
                         }
                         return $state;
