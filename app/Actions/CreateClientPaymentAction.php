@@ -7,14 +7,20 @@ namespace App\Actions;
 use App\Enums\Plan;
 use App\Models\Client;
 use App\Models\ClientPayment;
+use App\Services\StatusHistoryService;
 use Illuminate\Support\Facades\Auth;
 
 class CreateClientPaymentAction
 {
+    public function __construct(private readonly StatusHistoryService $statusHistoryService)
+    {
+
+    }
+
     public function handle(Client $client, array $data): void
     {
         $client->update([
-            'plan' => Plan::PAID
+            'plan' => Plan::PAID,
         ]);
 
         ClientPayment::create([
@@ -25,5 +31,7 @@ class CreateClientPaymentAction
             'statement' => $data['statement'],
             'actioned_by' => Auth::user()->id
         ]);
+
+        $this->statusHistoryService->create($client);
     }
 }
