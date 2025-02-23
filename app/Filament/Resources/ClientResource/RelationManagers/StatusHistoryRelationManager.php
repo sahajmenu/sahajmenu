@@ -10,7 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class StatusRelationManager extends RelationManager
+class StatusHistoryRelationManager extends RelationManager
 {
     protected static string $relationship = 'status';
 

@@ -8,7 +8,7 @@ use App\Enums\Role;
 use App\Enums\Status;
 use App\Filament\Common\Actions\SuspendUnsuspendAction;
 use App\Filament\Common\Forms\UserForm;
-use App\Filament\Resources\ClientResource\RelationManagers\StatusRelationManager;
+use App\Filament\Resources\ClientResource\RelationManagers\StatusHistoryRelationManager;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
@@ -77,7 +77,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            StatusRelationManager::class
+            StatusHistoryRelationManager::class
         ];
     }
 

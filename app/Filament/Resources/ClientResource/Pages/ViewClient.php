@@ -6,7 +6,7 @@ namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Resources\ClientResource;
 use App\Filament\Resources\ClientResource\RelationManagers\ClientPaymentsRelationManager;
-use App\Filament\Resources\ClientResource\RelationManagers\StatusRelationManager;
+use App\Filament\Resources\ClientResource\RelationManagers\StatusHistoryRelationManager;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewClient extends ViewRecord
@@ -16,7 +16,7 @@ class ViewClient extends ViewRecord
     public function getRelationManagers(): array
     {
         return [
-            StatusRelationManager::class,
+            StatusHistoryRelationManager::class,
             ClientPaymentsRelationManager::class
         ];
     }

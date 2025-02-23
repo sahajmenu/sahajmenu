@@ -7,6 +7,7 @@ namespace App\Filament\Resources\ClientResource\RelationManagers;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientPaymentsRelationManager extends RelationManager
 {
@@ -28,6 +29,6 @@ class ClientPaymentsRelationManager extends RelationManager
             ])
             ->filters([
                 //
-            ]);
+            ])->modifyQueryUsing(fn (Builder $query) => $query->orderByDesc('created_at'));
     }
 }
