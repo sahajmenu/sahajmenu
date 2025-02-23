@@ -104,6 +104,7 @@ class ClientResource extends Resource
                     ViewAction::make(),
                     ...SuspendUnsuspendAction::make(),
                     Action::make('Payment')
+                        ->icon('heroicon-o-banknotes')
                         ->form([
                             Select::make('type')
                                 ->options(PaymentType::class)
