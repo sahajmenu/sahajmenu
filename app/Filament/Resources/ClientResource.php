@@ -106,17 +106,23 @@ class ClientResource extends Resource
                     Action::make('Payment')
                         ->icon('heroicon-o-banknotes')
                         ->form([
+                            TextInput::make('month')
+                                ->required()
+                                ->helperText('It is subscription month')
+                                ->integer()
+                                ->minValue(1),
                             Select::make('type')
                                 ->options(PaymentType::class)
+                                ->required()
                                 ->searchable(),
-                            TextArea::make('note')
-                                ->string()
-                                ->maxLength(255),
                             TextInput::make('amount')
                                 ->required()
                                 ->integer()
                                 ->prefixIcon('heroicon-o-currency-rupee')
                                 ->minValue(1),
+                            TextArea::make('note')
+                                ->string()
+                                ->maxLength(255),
                             FileUpload::make('statement')
                                 ->disk('public')
                                 ->directory('statements')

@@ -43,7 +43,6 @@ class MenuResource extends Resource
                     ->maxLength(255),
                 TextInput::make('price')
                     ->required()
-                    ->numeric()
                     ->integer()
                     ->minValue(1)
                     ->maxValue(10000)

@@ -21,6 +21,7 @@ class CreateClientPaymentAction
     {
         $client->update([
             'plan' => Plan::PAID,
+            'expires_at' => now()->addMonths((int) $data['month'])
         ]);
 
         ClientPayment::create([
