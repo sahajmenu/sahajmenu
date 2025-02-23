@@ -32,6 +32,6 @@ class CreateClientPaymentAction
             'actioned_by' => Auth::user()->id
         ]);
 
-        $this->statusHistoryService->create($client);
+        $this->statusHistoryService->create(record: $client, reason: 'Payment Completed');
     }
 }

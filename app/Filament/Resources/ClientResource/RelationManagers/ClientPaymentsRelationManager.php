@@ -23,9 +23,14 @@ class ClientPaymentsRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('type'),
+                TextColumn::make('amount'),
                 TextColumn::make('note'),
                 TextColumn::make('user.name')
-                    ->label('Actioned By')
+                    ->label('Actioned By'),
+                TextColumn::make('created_at')
+                    ->since()
+                    ->dateTimeTooltip()
+
             ])
             ->filters([
                 //

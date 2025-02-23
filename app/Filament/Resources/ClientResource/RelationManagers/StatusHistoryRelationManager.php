@@ -25,6 +25,12 @@ class StatusHistoryRelationManager extends RelationManager
                     ->badge()
                     ->color(fn (Status $state): string => $state->color())
                     ->formatStateUsing(fn (Status $state): string => $state->display()),
+                TextColumn::make('user.name')
+                    ->label('Actioned By')
+                    ->default('System'),
+                TextColumn::make('created_at')
+                    ->since()
+                    ->dateTimeTooltip(),
                 TextColumn::make('reason')
                     ->limit(50)
                     ->tooltip(function (TextColumn $column): ?string {
@@ -33,13 +39,7 @@ class StatusHistoryRelationManager extends RelationManager
                             return null;
                         }
                         return $state;
-                    }),
-                TextColumn::make('created_at')
-                    ->since()
-                    ->dateTimeTooltip(),
-                TextColumn::make('user.name')
-                    ->label('Actioned By')
-                    ->default('System')
+                    })
             ])
             ->filters([
                 //
