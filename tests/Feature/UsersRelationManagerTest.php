@@ -6,7 +6,7 @@ namespace Tests\Feature;
 
 use App\Enums\Role;
 use App\Filament\Resources\ClientResource\Pages\EditClient;
-use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
+use App\Filament\Resources\ClientResource\RelationManagers\UsersRelationManager;
 use App\Models\User;
 use Filament\Tables\Actions\CreateAction;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

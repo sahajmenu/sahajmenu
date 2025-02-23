@@ -11,7 +11,6 @@ class ClientService
 {
     public function createDirectoryForClientMenuImages(Client $client): void
     {
-        Storage::disk('menus')
-            ->makeDirectory($client->id);
+        Storage::disk('public')->makeDirectory('menus/' . $client->id);
     }
 }

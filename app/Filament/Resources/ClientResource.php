@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Actions\CreateClientPaymentAction;
+use App\Enums\PaymentType;
 use App\Enums\Plan;
 use App\Enums\Status;
 use App\Filament\Common\Actions\SuspendUnsuspendAction;
@@ -14,6 +16,9 @@ use App\Filament\Resources\ClientResource\Pages\ViewClient;
 use App\Models\Client;
 use App\Traits\AdminAccess;
 use App\Traits\HasActiveIcon;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -26,6 +31,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Infolists\Components\Section as InfolistSection;
 
 class ClientResource extends Resource
 {
@@ -65,7 +71,8 @@ class ClientResource extends Resource
                     ->icon('heroicon-m-photo')
                     ->schema([
                         FileUpload::make('logo')
-                            ->disk('logos')
+                            ->disk('public')
+                            ->directory('logos')
                             ->columnSpanFull(),
                     ]),
             ])->columns(2);
@@ -96,6 +103,25 @@ class ClientResource extends Resource
                     EditAction::make(),
                     ViewAction::make(),
                     ...SuspendUnsuspendAction::make(),
+                    Action::make('Payment')
+                        ->form([
+                            Select::make('type')
+                                ->options(PaymentType::class)
+                                ->searchable(),
+                            TextArea::make('note')
+                                ->string()
+                                ->maxLength(255),
+                            TextInput::make('amount')
+                                ->required()
+                                ->integer()
+                                ->prefixIcon('heroicon-o-currency-rupee')
+                                ->minValue(1),
+                            FileUpload::make('statement')
+                                ->disk('public')
+                                ->directory('statements')
+                                ->acceptedFileTypes(['application/pdf','image/jpeg','image/png'])
+                                ->maxSize(5120),
+                        ])->action(fn (Client $record, array $data, CreateClientPaymentAction $clientPayment) => $clientPayment->handle($record, $data))
                 ])
             ]);
     }
@@ -114,7 +140,10 @@ class ClientResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('name')
+                InfolistSection::make('Client Information')
+                ->schema([
+                    TextEntry::make('name')
+                ])
             ]);
     }
 

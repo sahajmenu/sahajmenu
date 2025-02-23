@@ -60,4 +60,9 @@ class Client extends Model
     {
         return $this->morphOne(StatusHistory::class, 'statusable')->latestOfMany();
     }
+
+    public function clientPayments(): HasMany
+    {
+        return $this->hasMany(ClientPayment::class, 'client_id');
+    }
 }

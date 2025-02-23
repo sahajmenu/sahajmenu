@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\StatusHistoryResource\RelationManagers;
+namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Enums\Status;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\TextColumn;
 
 class StatusRelationManager extends RelationManager
 {
     protected static string $relationship = 'status';
+
+    protected static ?string $icon = 'heroicon-o-server-stack';
 
     public function table(Table $table): Table
     {

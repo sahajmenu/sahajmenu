@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Resources\ClientResource;
-use App\Filament\Resources\TableResource\RelationManagers\TablesRelationManager;
-use App\Filament\Resources\UserResource\RelationManagers\UsersRelationManager;
+use App\Filament\Resources\ClientResource\RelationManagers\TablesRelationManager;
+use App\Filament\Resources\ClientResource\RelationManagers\UsersRelationManager;
 use App\Traits\AdminAccess;
 use Filament\Resources\Pages\EditRecord;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Enums\Role;
 use App\Enums\Status;

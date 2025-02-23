@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\TableResource\RelationManagers;
+namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Actions\ImportBulkTableAction;
 use Filament\Forms\Components\Grid;
