@@ -82,7 +82,7 @@ class UsersRelationManager extends RelationManager
                                         ->limit(50)
                                         ->tooltip(function (TextEntry $entry): ?string {
                                             $state = $entry->getState();
-                                            if (strlen($state) <= $entry->getCharacterLimit()) {
+                                            if ($state && strlen($state) <= $entry->getCharacterLimit()) {
                                                 return null;
                                             }
                                             return $state;

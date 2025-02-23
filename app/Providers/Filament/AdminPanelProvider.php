@@ -75,7 +75,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(function (): ?string {
                 $client = auth()->user()?->client;
 
-                return ($client?->logo && Storage::disk('logos')->exists($client->logo)) ? Storage::disk('logos')->url($client->logo) : null;
+                return ($client?->logo && Storage::disk('public')->exists($client->logo)) ? Storage::disk('public')->url($client->logo) : null;
             });
     }
 }

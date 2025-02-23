@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClientResource\RelationManagers;
 
+use App\Actions\DownloadStatementAction;
+use App\Models\ClientPayment;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,6 +34,11 @@ class ClientPaymentsRelationManager extends RelationManager
                     ->since()
                     ->dateTimeTooltip()
 
+            ])
+            ->actions([
+                Action::make('Download')
+                    ->action(fn (ClientPayment $record, DownloadStatementAction $download) => $download->handle($record))
+                    ->hidden(fn (ClientPayment $record) => !$record->statement)
             ])
             ->filters([
                 //
