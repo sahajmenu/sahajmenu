@@ -103,7 +103,7 @@ class ClientResource extends Resource
                     EditAction::make(),
                     ViewAction::make(),
                     ...SuspendUnsuspendAction::make(),
-                    Action::make('Payment')
+                    Action::make('Renew')
                         ->icon('heroicon-o-banknotes')
                         ->form([
                             TextInput::make('month')
