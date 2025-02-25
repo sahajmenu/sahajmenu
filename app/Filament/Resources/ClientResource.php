@@ -16,22 +16,22 @@ use App\Filament\Resources\ClientResource\Pages\ViewClient;
 use App\Models\Client;
 use App\Traits\AdminAccess;
 use App\Traits\HasActiveIcon;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section as InfolistSection;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Infolists\Components\Section as InfolistSection;
 
 class ClientResource extends Resource
 {
@@ -65,7 +65,7 @@ class ClientResource extends Resource
                             ->string()
                             ->maxLength(255),
                         TextInput::make('phone')
-                            ->tel()
+                            ->tel(),
                     ])->columns(2),
                 Section::make('Client Logo')
                     ->icon('heroicon-m-photo')
@@ -93,7 +93,7 @@ class ClientResource extends Resource
                     ->color(fn (Status $state): string => $state->color())
                     ->formatStateUsing(fn (Status $state): string => $state->display()),
                 TextColumn::make('expires_at')
-                    ->date()
+                    ->date(),
             ])
             ->filters([
                 //
@@ -126,10 +126,10 @@ class ClientResource extends Resource
                             FileUpload::make('statement')
                                 ->disk('public')
                                 ->directory('statements')
-                                ->acceptedFileTypes(['application/pdf','image/jpeg','image/png'])
+                                ->acceptedFileTypes(['application/pdf', 'image/jpeg', 'image/png'])
                                 ->maxSize(5120),
-                        ])->action(fn (Client $record, array $data, CreateClientPaymentAction $clientPayment) => $clientPayment->handle($record, $data))
-                ])
+                        ])->action(fn (Client $record, array $data, CreateClientPaymentAction $clientPayment) => $clientPayment->handle($record, $data)),
+                ]),
             ]);
     }
 
@@ -148,9 +148,9 @@ class ClientResource extends Resource
         return $infolist
             ->schema([
                 InfolistSection::make('Client Information')
-                ->schema([
-                    TextEntry::make('name')
-                ])
+                    ->schema([
+                        TextEntry::make('name'),
+                    ]),
             ]);
     }
 

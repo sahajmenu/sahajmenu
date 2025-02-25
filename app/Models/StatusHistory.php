@@ -18,11 +18,11 @@ class StatusHistory extends Model
     protected $fillable = [
         'reason',
         'status',
-        'actioned_by'
+        'actioned_by',
     ];
 
     protected $casts = [
-        'status' => Status::class
+        'status' => Status::class,
     ];
 
     public function statusable(): MorphTo

@@ -32,13 +32,13 @@ class ClientPaymentsRelationManager extends RelationManager
                     ->label('Actioned By'),
                 TextColumn::make('created_at')
                     ->since()
-                    ->dateTimeTooltip()
+                    ->dateTimeTooltip(),
 
             ])
             ->actions([
                 Action::make('Download')
                     ->action(fn (ClientPayment $record, DownloadStatementAction $download) => $download->handle($record))
-                    ->hidden(fn (ClientPayment $record) => !$record->statement)
+                    ->hidden(fn (ClientPayment $record) => ! $record->statement),
             ])
             ->filters([
                 //

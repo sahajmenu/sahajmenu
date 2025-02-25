@@ -21,6 +21,7 @@ class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use Notifiable;
 
     /**
@@ -33,7 +34,7 @@ class User extends Authenticatable implements FilamentUser
         'email',
         'password',
         'role',
-        'client_id'
+        'client_id',
     ];
 
     /**
@@ -99,7 +100,7 @@ class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => Role::class
+            'role' => Role::class,
         ];
     }
 }

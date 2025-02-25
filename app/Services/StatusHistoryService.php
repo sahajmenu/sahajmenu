@@ -19,7 +19,7 @@ class StatusHistoryService
         return $record->status()->create([
             'reason' => $reason,
             'status' => $status,
-            'actioned_by' => $actionedBy
+            'actioned_by' => $actionedBy,
         ]);
     }
 }

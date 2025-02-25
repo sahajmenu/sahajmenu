@@ -20,13 +20,13 @@ class SuspendUnsuspendAction
                 name: 'suspend',
                 icon: 'heroicon-o-lock-closed',
                 color: 'danger',
-                action : new SuspendAction(),
+                action : new SuspendAction,
             ),
             self::makeAction(
                 name: 'unsuspend',
                 icon: 'heroicon-o-lock-open',
                 color: 'success',
-                action : new UnsuspendAction(),
+                action : new UnsuspendAction,
             ),
         ];
     }
@@ -41,7 +41,7 @@ class SuspendUnsuspendAction
                 Textarea::make('reason')
                     ->string()
                     ->nullable()
-                    ->maxLength(255)
+                    ->maxLength(255),
             ])
             ->action(fn (User|Client $record, array $data) => $action->handle(record: $record, reason: $data['reason']));
     }

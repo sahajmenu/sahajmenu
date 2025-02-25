@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
+
     protected static ?string $icon = 'heroicon-m-users';
 
     public function form(Form $form): Form
@@ -54,46 +55,47 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                ->after(function (User $user, StatusHistoryService $statusHistoryService): void {
-                    $statusHistoryService->create(record: $user);
-                })
+                    ->after(function (User $user, StatusHistoryService $statusHistoryService): void {
+                        $statusHistoryService->create(record: $user);
+                    }),
             ])
             ->actions([
                 ActionGroup::make([
                     EditAction::make(),
                     ViewAction::make()
-                    ->slideOver()
-                    ->infolist([
-                        Section::make('Status History')
-                        ->schema([
-                            RepeatableEntry::make('status')
-                                ->label('')
-                                ->getStateUsing(fn ($record) => $record->status->sortByDesc('id'))
+                        ->slideOver()
+                        ->infolist([
+                            Section::make('Status History')
                                 ->schema([
-                                    TextEntry::make('status')
-                                        ->badge()
-                                        ->color(fn (Status $state): string => $state->color())
-                                        ->formatStateUsing(fn (Status $state): string => $state->display()),
-                                    TextEntry::make('created_at')
-                                        ->label('Created Date')
-                                        ->since()
-                                        ->dateTimeTooltip(),
-                                    TextEntry::make('reason')
-                                        ->limit(50)
-                                        ->tooltip(function (TextEntry $entry): ?string {
-                                            $state = $entry->getState();
-                                            if ($state && strlen($state) <= $entry->getCharacterLimit()) {
-                                                return null;
-                                            }
-                                            return $state;
-                                        }),
-                                    TextEntry::make('user.name')
-                                        ->label('Actioned By')
-                                        ->default('System')
-                                ])->columns(2)->contained(true)->grid(2)
-                        ])
-                    ]),
-                    ...SuspendUnsuspendAction::make()
+                                    RepeatableEntry::make('status')
+                                        ->label('')
+                                        ->getStateUsing(fn ($record) => $record->status->sortByDesc('id'))
+                                        ->schema([
+                                            TextEntry::make('status')
+                                                ->badge()
+                                                ->color(fn (Status $state): string => $state->color())
+                                                ->formatStateUsing(fn (Status $state): string => $state->display()),
+                                            TextEntry::make('created_at')
+                                                ->label('Created Date')
+                                                ->since()
+                                                ->dateTimeTooltip(),
+                                            TextEntry::make('reason')
+                                                ->limit(50)
+                                                ->tooltip(function (TextEntry $entry): ?string {
+                                                    $state = $entry->getState();
+                                                    if ($state && strlen($state) <= $entry->getCharacterLimit()) {
+                                                        return null;
+                                                    }
+
+                                                    return $state;
+                                                }),
+                                            TextEntry::make('user.name')
+                                                ->label('Actioned By')
+                                                ->default('System'),
+                                        ])->columns(2)->contained(true)->grid(2),
+                                ]),
+                        ]),
+                    ...SuspendUnsuspendAction::make(),
                 ]),
             ])->modifyQueryUsing(fn (Builder $query) => $query->filterByUserRole());
     }

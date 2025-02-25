@@ -14,8 +14,10 @@ class DownloadStatementAction
     {
         if (Storage::disk('public')->exists($clientPayment->statement)) {
             $path = Storage::disk('public')->path($clientPayment->statement);
+
             return response()->download($path);
         }
+
         return null;
     }
 }

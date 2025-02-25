@@ -16,6 +16,7 @@ class CreateClient extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['expires_at'] = now()->addDays(14);
+
         return $data;
     }
 

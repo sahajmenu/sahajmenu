@@ -12,16 +12,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CreateClientPaymentAction
 {
-    public function __construct(private readonly StatusHistoryService $statusHistoryService)
-    {
-
-    }
+    public function __construct(private readonly StatusHistoryService $statusHistoryService) {}
 
     public function handle(Client $client, array $data): void
     {
         $client->update([
             'plan' => Plan::PAID,
-            'expires_at' => now()->addMonths((int) $data['month'])
+            'expires_at' => now()->addMonths((int) $data['month']),
         ]);
 
         ClientPayment::create([
@@ -30,7 +27,7 @@ class CreateClientPaymentAction
             'note' => $data['note'],
             'amount' => $data['amount'],
             'statement' => $data['statement'],
-            'actioned_by' => Auth::user()->id
+            'actioned_by' => Auth::user()->id,
         ]);
 
         $this->statusHistoryService->create(record: $client, reason: 'Payment Completed');

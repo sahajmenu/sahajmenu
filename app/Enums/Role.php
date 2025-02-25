@@ -37,7 +37,7 @@ enum Role: string
     {
         return [
             self::MANAGER,
-            self::FRONT_DESK
+            self::FRONT_DESK,
         ];
     }
 

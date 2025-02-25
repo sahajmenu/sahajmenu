@@ -25,11 +25,11 @@ class Client extends Model
         'subdomain',
         'logo',
         'expires_at',
-        'plan'
+        'plan',
     ];
 
     protected $casts = [
-        'plan' => Plan::class
+        'plan' => Plan::class,
     ];
 
     public function users(): HasMany

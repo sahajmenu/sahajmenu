@@ -42,7 +42,7 @@ class UserResource extends Resource
             ->schema([
                 Section::make()
                     ->schema(UserForm::make($form))
-                    ->columns(2)
+                    ->columns(2),
             ]);
     }
 
@@ -69,15 +69,15 @@ class UserResource extends Resource
             ->actions([
                 ActionGroup::make([
                     EditAction::make(),
-                    ...SuspendUnsuspendAction::make()
-                ])
+                    ...SuspendUnsuspendAction::make(),
+                ]),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            StatusHistoryRelationManager::class
+            StatusHistoryRelationManager::class,
         ];
     }
 

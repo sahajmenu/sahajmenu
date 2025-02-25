@@ -52,6 +52,7 @@ class UserForm
                 ->in(Role::getClientRoleOptions(auth()->user()->role)->keys())
                 ->live();
         }
+
         return $schema;
     }
 }

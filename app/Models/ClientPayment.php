@@ -16,11 +16,11 @@ class ClientPayment extends Model
         'statement',
         'actioned_by',
         'note',
-        'amount'
+        'amount',
     ];
 
     protected $casts = [
-        'type' => PaymentType::class
+        'type' => PaymentType::class,
     ];
 
     public function user(): BelongsTo

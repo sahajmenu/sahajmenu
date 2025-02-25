@@ -17,7 +17,7 @@ class ViewClient extends ViewRecord
     {
         return [
             StatusHistoryRelationManager::class,
-            ClientPaymentsRelationManager::class
+            ClientPaymentsRelationManager::class,
         ];
     }
 }

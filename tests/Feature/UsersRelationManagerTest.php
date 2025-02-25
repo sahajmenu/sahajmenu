@@ -21,8 +21,8 @@ class UsersRelationManagerTest extends TestCase
     public static function canAddRole(): array
     {
         return [
-            [Role::MANAGER ],
-            [Role::FRONT_DESK]
+            [Role::MANAGER],
+            [Role::FRONT_DESK],
         ];
     }
 
@@ -30,19 +30,19 @@ class UsersRelationManagerTest extends TestCase
     {
         return [
             [Role::SUPER_ADMIN],
-            [Role::ADMIN]
+            [Role::ADMIN],
         ];
     }
 
     #[DataProvider('canAddRole')]
-    public function testClientCanAddUser(Role $role): void
+    public function test_client_can_add_user(Role $role): void
     {
         $user = User::factory()->withClient(Role::OWNER)->createQuietly();
 
         Livewire::actingAs($user)
             ->test(UsersRelationManager::class, [
                 'ownerRecord' => $user->client,
-                'pageClass' => EditClient::class
+                'pageClass' => EditClient::class,
             ])
             ->assertTableActionExists('create')
             ->mountTableAction(CreateAction::class)
@@ -50,7 +50,7 @@ class UsersRelationManagerTest extends TestCase
                 'name' => 'Test',
                 'email' => 'test@example.com',
                 'password' => bcrypt('password'),
-                'role' => $role
+                'role' => $role,
             ])
             ->callMountedTableAction()
             ->assertHasNoTableActionErrors()
@@ -58,14 +58,14 @@ class UsersRelationManagerTest extends TestCase
     }
 
     #[DataProvider('cannotAddRole')]
-    public function testClientCannotAddUser(Role $role): void
+    public function test_client_cannot_add_user(Role $role): void
     {
         $user = User::factory()->withClient(Role::OWNER)->createQuietly();
 
         Livewire::actingAs($user)
             ->test(UsersRelationManager::class, [
                 'ownerRecord' => $user->client,
-                'pageClass' => EditClient::class
+                'pageClass' => EditClient::class,
             ])
             ->assertTableActionExists('create')
             ->mountTableAction(CreateAction::class)
@@ -73,7 +73,7 @@ class UsersRelationManagerTest extends TestCase
                 'name' => 'Test',
                 'email' => 'test@example.com',
                 'password' => bcrypt('password'),
-                'role' => $role
+                'role' => $role,
             ])
             ->callMountedTableAction()
             ->assertHasTableActionErrors(['role'])

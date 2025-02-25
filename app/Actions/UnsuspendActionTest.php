@@ -8,6 +8,7 @@ use App\Enums\Role;
 use App\Enums\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UnsuspendActionTest extends TestCase
@@ -16,13 +17,14 @@ class UnsuspendActionTest extends TestCase
 
     private UnsuspendAction $unsuspendAction;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->unsuspendAction = resolve(UnsuspendAction::class);
     }
 
-    public function testAdminCanUnsuspendUser(): void
+    #[Test]
+    public function adminCanUnsuspendUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
 
@@ -39,7 +41,8 @@ class UnsuspendActionTest extends TestCase
         $this->assertEquals(Status::ACTIVE, $user->latestStatus->status);
     }
 
-    public function testAdminCanUnsuspendClientUser(): void
+    #[Test]
+    public function adminCanUnsuspendClientUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
 

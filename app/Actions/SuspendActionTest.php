@@ -8,6 +8,7 @@ use App\Enums\Role;
 use App\Enums\Status;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SuspendActionTest extends TestCase
@@ -16,13 +17,14 @@ class SuspendActionTest extends TestCase
 
     private SuspendAction $suspendAction;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->suspendAction = resolve(SuspendAction::class);
     }
 
-    public function testAdminCanSuspendUser(): void
+    #[Test]
+    public function adminCanSuspendUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
 
@@ -39,7 +41,8 @@ class SuspendActionTest extends TestCase
         $this->assertEquals(Status::SUSPENDED, $user->latestStatus->status);
     }
 
-    public function testAdminCanSuspendClientUser(): void
+    #[Test]
+    public function adminCanSuspendClientUser(): void
     {
         $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
         $user = User::factory()->withClient(Role::OWNER)->withStatusHistory()->createQuietly();

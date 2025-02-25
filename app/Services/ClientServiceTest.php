@@ -24,7 +24,7 @@ class ClientServiceTest extends TestCase
         resolve(ClientService::class)->createDirectoryForClientMenuImages($client);
 
         $this->assertDirectoryExists(
-            Storage::disk('public')->path('menus/'. $client->id)
+            Storage::disk('public')->path('menus/'.$client->id)
         );
     }
 }

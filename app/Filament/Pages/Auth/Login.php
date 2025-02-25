@@ -42,7 +42,7 @@ class Login extends BasePage
         } elseif ($user->latestStatus->status === Status::SUSPENDED) {
             $this->logOutAndThrowException($user->latestStatus->status);
 
-        } elseif (in_array($user->client?->latestStatus->status, [Status::SUSPENDED,Status::EXPIRED])) {
+        } elseif (in_array($user->client?->latestStatus->status, [Status::SUSPENDED, Status::EXPIRED])) {
             $this->logOutAndThrowException($user->client?->latestStatus->status);
         }
 
@@ -55,7 +55,7 @@ class Login extends BasePage
     {
         Filament::auth()->logout();
         throw ValidationException::withMessages([
-            'data.email' => $status->errorMessage()
+            'data.email' => $status->errorMessage(),
         ]);
     }
 }

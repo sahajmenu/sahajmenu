@@ -27,6 +27,7 @@ use Illuminate\Validation\Rules\Unique;
 class TablesRelationManager extends RelationManager
 {
     protected static string $relationship = 'tables';
+
     protected static ?string $icon = 'heroicon-m-computer-desktop';
 
     public function form(Form $form): Form

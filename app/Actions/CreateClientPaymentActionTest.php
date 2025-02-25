@@ -10,13 +10,15 @@ use App\Enums\Status;
 use App\Models\Client;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class CreateClientPaymentActionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testAdminCanRenewClientSubscription(): void
+    #[Test]
+    public function adminCanRenewClientSubscription(): void
     {
         $admin = User::factory()->asAdmin()->createQuietly();
 

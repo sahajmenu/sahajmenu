@@ -38,8 +38,9 @@ class StatusHistoryRelationManager extends RelationManager
                         if ($state && strlen($state) <= $column->getCharacterLimit()) {
                             return null;
                         }
+
                         return $state;
-                    })
+                    }),
             ])
             ->filters([
                 //
