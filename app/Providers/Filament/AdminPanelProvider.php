@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('app')
-            ->domain(config('app.short_url'))
+            ->domain(config('url.short'))
             ->login(Login::class)
             ->colors([
                 'primary' => Color::Blue,
