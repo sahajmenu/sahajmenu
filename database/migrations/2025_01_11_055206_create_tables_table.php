@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tables', function (Blueprint $table) {
+        Schema::create('tables', function (Blueprint $table): void {
             $table->id();
             $table->integer('number');
             $table->foreignIdFor(Client::class)->constrained();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature;
+namespace Tests\Feature\Resources;
 
 use App\Enums\Role;
 use App\Filament\Resources\MenuResource\Pages\CreateMenu;

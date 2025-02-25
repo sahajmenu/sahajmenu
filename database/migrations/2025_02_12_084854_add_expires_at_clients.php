@@ -10,14 +10,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-            $table->timestamp('expires_at')->default(now()->addDay(14));
+        Schema::table('clients', function (Blueprint $table): void {
+            $table->timestamp('expires_at')->default(now()->addDay());
         });
     }
 
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
+        Schema::table('clients', function (Blueprint $table): void {
             $table->dropColumn('expires_at');
         });
     }

@@ -39,7 +39,7 @@ class ClientFactory extends Factory
 
     public function withUser(Role $role, Status $status = Status::ACTIVE): static
     {
-        return $this->afterCreating(function (Client $client) use ($role, $status) {
+        return $this->afterCreating(function (Client $client) use ($role, $status): void {
             $user = User::factory()->createQuietly([
                 'client_id' => $client->id,
                 'role' => $role,
@@ -54,14 +54,14 @@ class ClientFactory extends Factory
 
     public function withMenuImageFolder(): static
     {
-        return $this->afterCreating(function (Client $client) {
+        return $this->afterCreating(function (Client $client): void {
             resolve(ClientService::class)->createDirectoryForClientMenuImages($client);
         });
     }
 
     public function withStatusHistory(Status $status = Status::ACTIVE): static
     {
-        return $this->afterCreating(function (Client $client) use ($status) {
+        return $this->afterCreating(function (Client $client) use ($status): void {
             resolve(StatusHistoryService::class)->create(
                 record: $client,
                 status: $status

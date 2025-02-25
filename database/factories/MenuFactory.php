@@ -28,19 +28,15 @@ class MenuFactory extends Factory
 
     public function withCategory(?Category $category = null): static
     {
-        return $this->state(function (array $attributes) use ($category) {
-            return [
-                'category_id' => $category ?? Category::factory()->createQuietly(),
-            ];
-        });
+        return $this->state(fn (array $attributes): array => [
+            'category_id' => $category ?? Category::factory()->createQuietly(),
+        ]);
     }
 
     public function withClient(?Client $client = null): static
     {
-        return $this->state(function (array $attributes) use ($client) {
-            return [
-                'client_id' => $client ?? Client::factory()->createQuietly(),
-            ];
-        });
+        return $this->state(fn (array $attributes): array => [
+            'client_id' => $client ?? Client::factory()->createQuietly(),
+        ]);
     }
 }

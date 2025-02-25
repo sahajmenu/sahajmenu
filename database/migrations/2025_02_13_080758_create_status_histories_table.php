@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('status_histories', function (Blueprint $table) {
+        Schema::create('status_histories', function (Blueprint $table): void {
             $table->id();
             $table->morphs('statusable');
             $table->string('reason')->nullable();

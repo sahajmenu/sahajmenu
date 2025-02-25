@@ -11,6 +11,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ClientPaymentsRelationManager extends RelationManager
 {
@@ -37,8 +38,8 @@ class ClientPaymentsRelationManager extends RelationManager
             ])
             ->actions([
                 Action::make('Download')
-                    ->action(fn (ClientPayment $record, DownloadStatementAction $download) => $download->handle($record))
-                    ->hidden(fn (ClientPayment $record) => ! $record->statement),
+                    ->action(fn (ClientPayment $record, DownloadStatementAction $download): ?BinaryFileResponse => $download->handle($record))
+                    ->hidden(fn (ClientPayment $record): bool => ! $record->statement),
             ])
             ->filters([
                 //

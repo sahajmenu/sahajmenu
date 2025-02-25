@@ -11,14 +11,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('status_histories', function (Blueprint $table) {
+        Schema::table('status_histories', function (Blueprint $table): void {
             $table->foreignIdFor(User::class, 'actioned_by')->nullable()->constrained();
         });
     }
 
     public function down(): void
     {
-        Schema::table('status_histories', function (Blueprint $table) {
+        Schema::table('status_histories', function (Blueprint $table): void {
             $table->dropForeign(['actioned_by']);
         });
     }

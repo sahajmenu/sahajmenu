@@ -12,7 +12,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('client_payments', function (Blueprint $table) {
+        Schema::create('client_payments', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Client::class)->constrained();
             $table->string('type');

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit;
+namespace Tests\Unit\Resources;
 
 use App\Enums\Role;
 use App\Filament\Resources\UserResource;

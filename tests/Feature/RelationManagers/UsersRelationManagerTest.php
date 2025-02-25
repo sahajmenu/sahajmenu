@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Feature\RelationManagers;
 
 use App\Enums\Role;
 use App\Filament\Resources\ClientResource\Pages\EditClient;

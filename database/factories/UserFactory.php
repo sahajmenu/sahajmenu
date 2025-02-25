@@ -21,7 +21,7 @@ class UserFactory extends Factory
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    protected static ?string $password = null;
 
     /**
      * Define the model's default state.
@@ -44,28 +44,28 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }
 
     public function asSuperAdmin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'role' => Role::SUPER_ADMIN,
         ]);
     }
 
     public function asAdmin(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'role' => Role::ADMIN,
         ]);
     }
 
     public function withClient(Role $role, Status $status = Status::ACTIVE): static
     {
-        return $this->state(function () use ($role, $status) {
+        return $this->state(function () use ($role, $status): array {
             $client = Client::factory()->createQuietly();
 
             resolve(StatusHistoryService::class)->create(
@@ -82,7 +82,7 @@ class UserFactory extends Factory
 
     public function withStatusHistory(Status $status = Status::ACTIVE): static
     {
-        return $this->afterCreating(function (User $user) use ($status) {
+        return $this->afterCreating(function (User $user) use ($status): void {
             resolve(StatusHistoryService::class)->create(
                 record: $user,
                 status: $status,

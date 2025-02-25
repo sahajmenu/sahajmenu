@@ -26,7 +26,7 @@ class CategoryFactory extends Factory
 
     public function withChild(): static
     {
-        return $this->afterCreating(function (Category $category) {
+        return $this->afterCreating(function (Category $category): void {
             Category::factory()->createQuietly([
                 'parent_id' => $category,
             ]);
