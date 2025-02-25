@@ -37,18 +37,25 @@ class Login extends BasePage
             (! $user->canAccessPanel(Filament::getCurrentPanel()))
         ) {
             Filament::auth()->logout();
-
             $this->throwFailureValidationException();
-        } elseif ($user->latestStatus->status === Status::SUSPENDED) {
-            Filament::auth()->logout();
 
-            throw ValidationException::withMessages([
-                'data.email' => $user->latestStatus->status->errorMessage()
-            ]);
+        } elseif ($user->latestStatus->status === Status::SUSPENDED) {
+            $this->logOutAndThrowException($user->latestStatus->status);
+
+        } elseif (in_array($user->client?->latestStatus->status, [Status::SUSPENDED,Status::EXPIRED])) {
+            $this->logOutAndThrowException($user->client?->latestStatus->status);
         }
 
         session()->regenerate();
 
         return app(LoginResponse::class);
+    }
+
+    private function logOutAndThrowException(Status $status): never
+    {
+        Filament::auth()->logout();
+        throw ValidationException::withMessages([
+            'data.email' => $status->errorMessage()
+        ]);
     }
 }

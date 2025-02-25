@@ -31,8 +31,8 @@ enum Status: string
     public function errorMessage(): string
     {
         return match ($this) {
-            self::SUSPENDED => 'Your account is suspended',
-            self::EXPIRED => 'Your organization has expired',
+            self::SUSPENDED => 'Your account is suspended.',
+            self::EXPIRED => 'Your organization has expired.',
             default => ''
         };
     }
