@@ -10,9 +10,9 @@ use App\Models\ClientPayment;
 use App\Services\StatusHistoryService;
 use Illuminate\Support\Facades\Auth;
 
-class CreateClientPaymentAction
+readonly class CreateClientPaymentAction
 {
-    public function __construct(private readonly StatusHistoryService $statusHistoryService) {}
+    public function __construct(private StatusHistoryService $statusHistoryService) {}
 
     public function handle(Client $client, array $data): void
     {
