@@ -19,7 +19,6 @@ class CreateClientPaymentAction
 
     public function handle(Client $client, array $data): void
     {
-
         $client->update([
             'plan' => Plan::PAID,
             'expires_at' => now()->addMonths((int) $data['month'])
