@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
@@ -64,5 +65,10 @@ class Client extends Model
     public function clientPayments(): HasMany
     {
         return $this->hasMany(ClientPayment::class, 'client_id');
+    }
+
+    public function latestClientPayment(): HasOne
+    {
+        return $this->hasOne(ClientPayment::class, 'client_id');
     }
 }

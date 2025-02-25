@@ -80,7 +80,7 @@ class UserFactory extends Factory
         });
     }
 
-    public function withStageHistory(Status $status = Status::ACTIVE): static
+    public function withStatusHistory(Status $status = Status::ACTIVE): static
     {
         return $this->afterCreating(function (User $user) use ($status) {
             resolve(StatusHistoryService::class)->create(

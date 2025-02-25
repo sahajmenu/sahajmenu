@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\Plan;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Models\Client;
@@ -31,6 +32,7 @@ class ClientFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->unique()->phoneNumber(),
             'subdomain' => lcfirst($name),
+            'plan' => Plan::FREE,
             'expires_at' => now()->addDays(14),
         ];
     }
@@ -57,7 +59,7 @@ class ClientFactory extends Factory
         });
     }
 
-    public function withStageHistory(Status $status = Status::ACTIVE): static
+    public function withStatusHistory(Status $status = Status::ACTIVE): static
     {
         return $this->afterCreating(function (Client $client) use ($status) {
             resolve(StatusHistoryService::class)->create(

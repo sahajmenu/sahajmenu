@@ -24,9 +24,9 @@ class SuspendActionTest extends TestCase
 
     public function testAdminCanSuspendUser(): void
     {
-        $admin = User::factory()->asSuperAdmin()->withStageHistory()->createQuietly();
+        $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
 
-        $user = User::factory()->asAdmin()->withStageHistory()->createQuietly();
+        $user = User::factory()->asAdmin()->withStatusHistory()->createQuietly();
 
         $this->actingAs($admin);
 
@@ -41,8 +41,8 @@ class SuspendActionTest extends TestCase
 
     public function testAdminCanSuspendClientUser(): void
     {
-        $admin = User::factory()->asSuperAdmin()->withStageHistory()->createQuietly();
-        $user = User::factory()->withClient(Role::OWNER)->withStageHistory()->createQuietly();
+        $admin = User::factory()->asSuperAdmin()->withStatusHistory()->createQuietly();
+        $user = User::factory()->withClient(Role::OWNER)->withStatusHistory()->createQuietly();
 
         $this->actingAs($admin);
 

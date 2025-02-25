@@ -16,7 +16,7 @@ class ClientSeeder extends Seeder
     public function run(): void
     {
         Client::factory()
-            ->withStageHistory()
+            ->withStatusHistory()
             ->withUser(Role::OWNER)
             ->withUser(Role::MANAGER)
             ->withUser(Role::FRONT_DESK)
@@ -29,7 +29,7 @@ class ClientSeeder extends Seeder
             ]);
 
         Client::factory()
-            ->withStageHistory()
+            ->withStatusHistory()
             ->withUser(Role::OWNER)
             ->withUser(Role::MANAGER)
             ->withUser(Role::FRONT_DESK)
