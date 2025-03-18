@@ -71,7 +71,7 @@ class TablesRelationManager extends RelationManager
                                     ->prefix('Table'),
                             ]),
                     ])->action(function (array $data, ImportBulkTableAction $bulkAction): void {
-                        $bulkAction->handle($data['total'], $this->ownerRecord);
+                        $bulkAction->handle((int) $data['total'], $this->ownerRecord);
                         Notification::make()
                             ->title('Bulk Table Created')
                             ->success()

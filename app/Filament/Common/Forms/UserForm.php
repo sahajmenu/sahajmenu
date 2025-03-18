@@ -35,7 +35,7 @@ class UserForm
                 ->suffixAction(
                     Action::make('generateRandomPassword')
                         ->icon('heroicon-m-key')
-                        ->action(function (Set $set, $state): void {
+                        ->action(function (Set $set): void {
                             $set('password', Str::random(10));
                         })
                 )

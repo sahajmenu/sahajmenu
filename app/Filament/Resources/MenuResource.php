@@ -22,6 +22,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class MenuResource extends Resource
 {
@@ -51,7 +52,12 @@ class MenuResource extends Resource
                     ->label('Category')
                     ->withCount()
                     ->searchable()
-                    ->relationship('category', 'name', 'parent_id')
+                    ->relationship(
+                        'category',
+                        'name',
+                        'parent_id',
+                        fn (Builder $query) => Auth::user()->clientAccess() ? $query->getClientOwnCategory() : $query,
+                    )
                     ->enableBranchNode()
                     ->createOptionForm([
                         TextInput::make('name')
