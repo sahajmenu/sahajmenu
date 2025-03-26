@@ -110,7 +110,7 @@ class OrderResource extends Resource
 
             Select::make('table_id')
                 ->label('Table')
-                ->options(fn (Get $get, TableService $tableService): array => $tableService->getTableOptionsForOrder($get('client_id'))
+                ->options(fn (Get $get, TableService $tableService): array => $tableService->getTableOptionsForOrder((int) $get('client_id'))
                 )
                 ->required()
                 ->searchable()
