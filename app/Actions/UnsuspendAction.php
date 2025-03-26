@@ -6,13 +6,12 @@ namespace App\Actions;
 
 use App\Models\Client;
 use App\Models\User;
-use App\Services\StatusHistoryService;
 
 class UnsuspendAction
 {
     public function handle(User|Client $record, ?string $reason = null): void
     {
-        resolve(StatusHistoryService::class)->create(
+        resolve(CreateStatusHistory::class)->handle(
             record: $record,
             reason: $reason,
         );

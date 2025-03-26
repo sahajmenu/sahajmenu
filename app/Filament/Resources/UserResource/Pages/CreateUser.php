@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\UserResource\Pages;
 
+use App\Actions\CreateStatusHistory;
 use App\Enums\Role;
 use App\Filament\Resources\UserResource;
-use App\Services\StatusHistoryService;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
@@ -22,7 +22,7 @@ class CreateUser extends CreateRecord
 
     protected function afterCreate(): void
     {
-        resolve(StatusHistoryService::class)->create(
+        resolve(CreateStatusHistory::class)->handle(
             record: $this->record,
         );
     }

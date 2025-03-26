@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Actions;
 
 use App\Enums\Status;
 use App\Models\Client;
@@ -10,9 +10,9 @@ use App\Models\StatusHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class StatusHistoryService
+class CreateStatusHistory
 {
-    public function create(User|Client $record, Status $status = Status::ACTIVE, ?string $reason = null): StatusHistory
+    public function handle(User|Client $record, Status $status = Status::ACTIVE, ?string $reason = null): StatusHistory
     {
         $actionedBy = Auth::user()->id ?? null;
 

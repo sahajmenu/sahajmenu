@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Actions\CreateStatusHistory;
 use App\Enums\Plan;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Models\Client;
 use App\Models\User;
 use App\Services\ClientService;
-use App\Services\StatusHistoryService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -45,7 +45,7 @@ class ClientFactory extends Factory
                 'role' => $role,
             ]);
 
-            resolve(StatusHistoryService::class)->create(
+            resolve(CreateStatusHistory::class)->handle(
                 record: $user,
                 status: $status,
             );
@@ -62,7 +62,7 @@ class ClientFactory extends Factory
     public function withStatusHistory(Status $status = Status::ACTIVE): static
     {
         return $this->afterCreating(function (Client $client) use ($status): void {
-            resolve(StatusHistoryService::class)->create(
+            resolve(CreateStatusHistory::class)->handle(
                 record: $client,
                 status: $status
             );

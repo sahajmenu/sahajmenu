@@ -7,12 +7,11 @@ namespace App\Actions;
 use App\Enums\Plan;
 use App\Models\Client;
 use App\Models\ClientPayment;
-use App\Services\StatusHistoryService;
 use Illuminate\Support\Facades\Auth;
 
 readonly class CreateClientPaymentAction
 {
-    public function __construct(private StatusHistoryService $statusHistoryService) {}
+    public function __construct(private CreateStatusHistory $statusHistoryService) {}
 
     public function handle(Client $client, array $data): void
     {
@@ -30,6 +29,6 @@ readonly class CreateClientPaymentAction
             'actioned_by' => Auth::user()->id,
         ]);
 
-        $this->statusHistoryService->create(record: $client, reason: 'Payment Completed');
+        $this->statusHistoryService->handle(record: $client, reason: 'Payment Completed');
     }
 }

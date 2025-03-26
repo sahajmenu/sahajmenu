@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClientResource\RelationManagers;
 
+use App\Actions\CreateStatusHistory;
 use App\Enums\Role;
 use App\Enums\Status;
 use App\Filament\Common\Actions\SuspendUnsuspendAction;
 use App\Filament\Common\Forms\UserForm;
 use App\Models\User;
-use App\Services\StatusHistoryService;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Section;
@@ -55,8 +55,8 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->after(function (User $user, StatusHistoryService $statusHistoryService): void {
-                        $statusHistoryService->create(record: $user);
+                    ->after(function (User $user, CreateStatusHistory $statusHistoryService): void {
+                        $statusHistoryService->handle(record: $user);
                     }),
             ])
             ->actions([

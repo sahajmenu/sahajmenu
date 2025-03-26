@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\ClientResource\Pages;
 
+use App\Actions\CreateStatusHistory;
 use App\Filament\Resources\ClientResource;
 use App\Services\ClientService;
-use App\Services\StatusHistoryService;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateClient extends CreateRecord
@@ -26,6 +26,6 @@ class CreateClient extends CreateRecord
     protected function afterCreate(): void
     {
         resolve(ClientService::class)->createDirectoryForClientMenuImages($this->record);
-        resolve(StatusHistoryService::class)->create(record: $this->record);
+        resolve(CreateStatusHistory::class)->handle(record: $this->record);
     }
 }
