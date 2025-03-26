@@ -88,7 +88,6 @@ class MenuResource extends Resource
                     ->image()
                     ->panelLayout('grid')
                     ->reorderable()
-                    ->disk('menus')
                     ->columnSpanFull(),
             ]);
     }
